@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}InnovShop{% endblock %}</title>
+        <link rel="icon" href="/images/logo.png">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+            <link href="/public/styles/style.css" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poetsen+One&display=swap" rel="stylesheet">
+
+        {% endblock %}
+
+        {% block javascripts %}
+            <script src="https://kit.fontawesome.com/f7370d9031.js" crossorigin="anonymous"></script>
+            {{ encore_entry_script_tags('app') }}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+
+    <header>
+        <div id="header">
+            <div class="menu pdgx-4">
+                <div class="nameSite col-3">
+                    <h1>
+                        <a href="{{ path('index') }}">InnovShop</a>
+                    </h1>
+                </div>
+                <div class="col-3">
+                    <form action="POST">
+                        <input class="search" type="text" name="search" placeholder="Rechercher un article..." />
+                    </form>
+                </div>
+
+                <div class="lienMenu col-3">
+                    <a href="" class="itemMenu">
+                        <span class="material-icons">person</span>
+                        <p>Mon compte</p>
+                    </a>
+                    <a href="" class="itemMenu">
+                        <span class="material-icons">shopping_basket</span>
+                        <p>Panier</p>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar pdgx-2" style="background: linear-gradient(to right, #4d307e 15%, #EEE9F6 15%)">
+                <nav>
+                    <ul class="row navbar-list">
+                        <div class="row">
+                            {% for category in categories %}
+                                <li class="pdx-1 nav-item color-{{ loop.index }}">
+                                    <h3><a href="#">{{ category.name }}</a></h3>
+                                </li>
+                            {% endfor %}
+                            <li class="nav-item color-{{ totalCategories + 1 }}"><h3><a href="/catalog">Tous les articles</a></h3></li>
+                        </div>
+                        <div>
+
+                        </div>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <body>
+    <main>
+        {% block body %}
+
+        {% endblock %}
+    </main>
+    </body>
+
+    <footer>
+
+        <div class="lienFooter row">
+            <div class="col-4 align-center mgy-2">
+                <a href="">Besoin d'aide ? Contactez nous</a>
+            </div>
+            <div class="col-4 align-center mgy-2">
+                <a href="">Signaler un problème</a>
+            </div>
+            <div class="col-4 align-center mgy-2">
+                <a href="">Mentions légales</a>
+            </div>
+            <div class="col-4 align-center mgy-2">
+                <a href="">Conditions générales de vente & CGU</a>
+            </div>
+        </div>
+
+        <div class="reseaux align-center">
+            <!-- Barre de separation -->
+            <div class="col-2" style="border-top: #38235E solid 1px;"></div>
+
+            <p class="col-1" style="padding-top: 2em;padding-bottom: 1em;font-weight: 200;">Rejoignez nous sur les réseaux sociaux</p>
+            <div class="logoReseaux col-2">
+                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="fa-brands fa-square-facebook"></a>
+                <a href="https://www.x.com" target="_blank" rel="noopener noreferrer" class="fa-brands fa-square-x-twitter"></a>
+                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="fa-brands fa-instagram"></a>
+                <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" class="fa-brands fa-tiktok"></a>
+                <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="fa-brands fa-youtube"></a>
+            </div>
+        </div>
+
+        <div class="cgu">
+            <p class="align-center mgy-3">
+                InnovShop, votre boutique en ligne dédiée aux technologies innovantes. Découvrez une large sélection de produits high-tech et des gadgets de pointe pour les passionnés de technologie, avec des nouveautés chaque semaine.<br>
+                Les images des produits sont à titre indicatif, le produit peut différer des éléments affichés sur la photo. Consultez la fiche produit pour plus de détails.
+            </p>
+            <p class="align-center">
+                © 2024 InnovShop. Tous droits réservés.<br>
+                Le contenu de ce site, y compris textes, images et graphismes, est protégé par le droit d'auteur.<br>
+                Toute utilisation, reproduction ou distribution non autorisée est interdite sans consentement préalable d’InnovShop.
+
+            </p>
+        </div>
+    </footer>
+</html>

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InnovShop - {{ article.title }}{% endblock %}
+
+{% block body %}
+    <h1>{{ article.title }}</h1>
+
+    <p>{{ article.description | nl2br }}</p>
+
+    <p>{{ article.price }} €</p>
+
+    {% for image in article.images %}
+        <img src="/images/uploads/{{ image }}" alt="">
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InnovShop - Catalogue{% endblock %}
+
+{% block body %}
+    Page catalogue<br>
+
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias asperiores beatae ducimus, excepturi facilis minus molestiae optio praesentium quae quaerat quas quis quisquam ratione sequi sunt tempore veniam voluptatibus! Quia!
+    
+    <ul>
+        {% for article in articles %}
+        <li>
+            <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
