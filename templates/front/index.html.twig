@@ -5,14 +5,56 @@
 {% block body %}
 
     <div class="container">
+
+
         <div class="lastArrived mgy-4">
             <h1>Nos derniers arrivages</h1>
+            <div class="carousel-container">
+                <button class="carousel-button prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-images">
+                            {% for article in articles %}
+                                {% if article.images|length > 0 %}
+                                    <div class="item-carousel {% if loop.first %}active{% endif %}">
+                                        <div class="content-item">
+                                            <div class="image-content col-2">
+                                                <img src="/images/uploads/{{ article.images[0] }}" alt="{{ article.title }}">
+                                            </div>
+                                            <div class="col-2" style="display:flex;align-items: center;">
+                                                <div class="content-content">
+                                                    <h1>{{ article.title }}</h1>
+                                                    <p>{{ article.description }}</p>
+                                                    <div class="prix-panier">
+                                                        <p>{{ article.price }} €</p>
+                                                        <a href="#">Ajouter au panier</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+                <button class="carousel-button next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
-        <div class="flashSales mgy-4">
+
+
+
+
+
+        <div class="flashSales" style="margin-top: 10rem;">
             <h1>Nos articles à la une</h1>
+
         </div>
-
-
     </div>
 
 
