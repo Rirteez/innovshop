@@ -18,7 +18,7 @@ class FrontController extends AbstractController {
             ->findBy([], ['createdAt' => 'DESC'], 3);
 
         return $this->render('front/index.html.twig', [
-            'articles' => $articles,
+            'latestArticles' => $articles,
         ]);
     }
 }

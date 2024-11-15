@@ -5,46 +5,54 @@
 {% block body %}
 
     <div class="container">
-
-
         <div class="lastArrived mgy-4">
             <h1>Nos derniers arrivages</h1>
-            <div class="carousel-container">
+
+            <!-- Cadre du carousel, il est fixe -->
+            <div class="carousel">
+                <!-- Bouton précédent -->
                 <button class="carousel-button prev">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <div class="carousel">
-                    <div class="carousel-wrapper">
-                        <div class="carousel-images">
-                            {% for article in articles %}
-                                {% if article.images|length > 0 %}
-                                    <div class="item-carousel {% if loop.first %}active{% endif %}">
-                                        <div class="content-item">
-                                            <div class="image-content col-2">
-                                                <img src="/images/uploads/{{ article.images[0] }}" alt="{{ article.title }}">
+                <div class="carousel-container">
+                    {% for article in latestArticles %}
+                        {% if article.images|length > 0 %}
+                            <!-- item du carousel, ce que l'on créé pour chaque article, c'est lui qui va defiler -->
+                            <div class="carousel-item">
+                                <!-- Contenu de l'item, ce qu'on voit physiquement, il est au centre de l'item -->
+                                <div class="item-content">
+                                    <!-- Conteneur de l'image, c'est a lui qu'on attribue la taille de l'image -->
+                                    <div class="image-item">
+                                        <!-- L'image elle, fait 100% de la taille de son conteneur -->
+                                        <img src="/images/uploads/{{ article.images[0] }}">
+                                    </div>
+                                    <!-- La partie droite de l'item qui contient la description de l'article -->
+                                    <div class="col-2">
+                                        <!-- La div qui contient la description -->
+                                        <div class="description-item">
+                                            <h1>{{ article.title }}</h1>
+                                            <p>{{ article.description }}</p>
+                                            <div class="prix-panier" >
+                                                <p style="margin:0;">{{ article.price }} €</p>
+                                                <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">Voir la page du produit</a>
                                             </div>
-                                            <div class="col-2" style="display:flex;align-items: center;">
-                                                <div class="content-content">
-                                                    <h1>{{ article.title }}</h1>
-                                                    <p>{{ article.description }}</p>
-                                                    <div class="prix-panier">
-                                                        <p>{{ article.price }} €</p>
-                                                        <a href="#">Ajouter au panier</a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <a class="button button-primary" href="#">
+                                                Ajouter au panier
+                                            </a>
                                         </div>
                                     </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
+                <!-- Bouton suivant -->
                 <button class="carousel-button next">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
+
+
         </div>
 
 

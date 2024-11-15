@@ -3,27 +3,29 @@ import './styles/app.scss';
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.item-carousel');
-    const totalSlides = slides.length;
-    const carouselImages = document.querySelector('.carousel-images');
-
-    function updateSlidePosition() {
-        const offset = -currentSlide * 100;
-        carouselImages.style.transform = `translateX(${offset}%)`;
-    }
-
-    function changeSlide(direction) {
-        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-        updateSlidePosition();
-    }
-
-    // Ajoute les écouteurs d'événements pour les boutons
+    const carouselContainer = document.querySelector('.carousel-container');
+    const items = document.querySelectorAll('.carousel-item');
     const prevButton = document.querySelector('.carousel-button.prev');
     const nextButton = document.querySelector('.carousel-button.next');
 
-    prevButton.addEventListener('click', () => changeSlide(-1));
-    nextButton.addEventListener('click', () => changeSlide(1));
+    let currentIndex = 0; // Index actuel
+    const totalItems = items.length; // Nombre total d'items
+
+    function updateCarousel() {
+        const offset = -currentIndex * 100; // Décalage en % par rapport à l'index
+        carouselContainer.style.transform = `translateX(${offset}%)`;
+    }
+
+    prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems; // Boucle au dernier élément
+        updateCarousel();
+    });
+
+    nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % totalItems; // Boucle au premier élément
+        updateCarousel();
+    });
+
+    // Initialisation pour assurer que le premier item est bien affiché
+    updateCarousel();
 });
-
-
