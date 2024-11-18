@@ -7,9 +7,8 @@
     <div class="container">
         <div class="lastArrived mgy-4">
             <h1>Nos derniers arrivages</h1>
-
             <!-- Cadre du carousel, il est fixe -->
-            <div class="carousel">
+            <div class="carousel" data-carousel="latest">
                 <!-- Bouton précédent -->
                 <button class="carousel-button prev">
                     <i class="fas fa-chevron-left"></i>
@@ -51,22 +50,72 @@
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-
-
         </div>
 
-
-
-
+        <div class="separation"></div>
 
         <div class="flashSales" style="margin-top: 10rem;">
             <h1>Nos articles à la une</h1>
-
+            <!-- Cadre du carousel, il est fixe -->
+            <div class="carousel" data-carousel="flash">
+                <!-- Bouton précédent -->
+                <button class="carousel-button prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel-container">
+                    {% for article in flashArticles %}
+                        {% if article.images|length > 0 %}
+                            <!-- item du carousel, ce que l'on créé pour chaque article, c'est lui qui va defiler -->
+                            <div class="carousel-item">
+                                <!-- Contenu de l'item, ce qu'on voit physiquement, il est au centre de l'item -->
+                                <div class="item-content">
+                                    <!-- Conteneur de l'image, c'est a lui qu'on attribue la taille de l'image -->
+                                    <div class="image-item">
+                                        <!-- L'image elle, fait 100% de la taille de son conteneur -->
+                                        <img src="/images/uploads/{{ article.images[0] }}">
+                                    </div>
+                                    <!-- La partie droite de l'item qui contient la description de l'article -->
+                                    <div class="col-2">
+                                        <!-- La div qui contient la description -->
+                                        <div class="description-item">
+                                            <h1>{{ article.title }}</h1>
+                                            <p>{{ article.description }}</p>
+                                            <div class="prix-panier" >
+                                                <p style="margin:0;">{{ article.price }} €</p>
+                                                <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">Voir la page du produit</a>
+                                            </div>
+                                            <a class="button button-primary btn-panier" href="#">
+                                                Ajouter au panier
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <!-- Bouton suivant -->
+                <button class="carousel-button next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
+        <div class="separation"></div>
+        <div class="apropos">
+            <h1>A propos de nous</h1>
+            <div class="row content-about">
+                <div class="text-about col-2">
+                    <p>
+                        Bienvenue chez <em>InnovShop</em>, la start-up qui révolutionne le monde des produits technologiques ! Fondée par des passionnés d’innovation, notre mission est de rendre les dernières avancées technologiques accessibles à tous. Nous sélectionnons avec soin des produits uniques et performants pour répondre aux besoins d’un public exigeant et curieux.<br><br>
+                        Face à une demande croissante, nous avons décidé de franchir une nouvelle étape dans notre aventure : créer une plateforme d’e-commerce moderne et intuitive. Grâce à cette solution digitale, nous souhaitons vous offrir une expérience d’achat fluide, pratique et agréable, tout en continuant à vous surprendre avec nos trouvailles innovantes.<br><br>
+                        Chez InnovShop, nous croyons que la technologie peut simplifier et enrichir la vie quotidienne. Explorez notre univers et laissez-vous inspirer par nos idées d’aujourd’hui pour le monde de demain !
+                    </p>
+                </div>
+                <div class="col-2">
+                    <img src="images/shop.jpeg" alt="Photo du magasin InnovShop de Paris.">
+                </div>
+            </div>
+        </div>
+        <div class="separation"></div>
     </div>
-
-
-
-
-
 {% endblock %}
