@@ -14,4 +14,14 @@
         </li>
         {% endfor %}
     </ul>
+
+    <div class="boutonPage">
+        {% if page > 1 %}
+            <a href="{{ path('article.index', {page: page - 1}) }}">Page précédente</a>
+        {% endif %}
+        {% if page < maxPage %}
+            <a href="{{ path('article.index', {page: page + 1}) }}">Page suivante</a>
+        {% endif %}
+    </div>
+
 {% endblock %}

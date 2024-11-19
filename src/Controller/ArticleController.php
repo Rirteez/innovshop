@@ -14,12 +14,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class ArticleController extends AbstractController
 {
     #[Route('/catalog', name: 'article.index')]
-    public function index(Request $request, ArticleRepository $repository, EntityManagerInterface $em): Response
+    public function index(Request $request, ArticleRepository $repository): Response
     {
-        $articles = $repository->findAll();
+        $page = $request->query->getInt('page', 1);
+        $perPage = 4;
+
+        $articles = $repository->paginateArticles($page, $perPage);
+        $maxPage = ceil($articles->getTotalItemCount() / $perPage);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
+            'maxPage' => $maxPage,
+            'page' => $page,
         ]);
     }
 
