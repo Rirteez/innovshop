@@ -3,6 +3,8 @@ import './styles/app.scss';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    /////////////////////////////////////// GESTION DES CAROUSELS DE LA PAGE D'ACCUEIL /////////////////////////////////
     const carousels = document.querySelectorAll('.carousel');
 
     carousels.forEach((carousel) => {
@@ -32,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCarousel();
     })
 
-    const selects = document.querySelectorAll('form.filter-sort select');const catalog = document.querySelector('.catalog');
+    /////////////////////////////////////// GESTION DES FILTRES ET TRIS DU CATALOGUE ///////////////////////////////////
+    const selects = document.querySelectorAll('form.filter-sort select');
 
     selects.forEach(select => {
         select.addEventListener('change', () => {
@@ -46,4 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `${form.action}?${params.toString()}`;
         })
     })
+
+
 });

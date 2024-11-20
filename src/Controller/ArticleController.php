@@ -22,10 +22,7 @@ class ArticleController extends AbstractController
         $filterBy = $request->query->get('filterBy');
         $sortBy = $request->query->get('sortBy');
 
-
-
         $articles = $repository->paginateArticles($page, $perPage, $filterBy, $sortBy);
-        $maxPage = ceil($articles->getTotalItemCount() / $perPage);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,

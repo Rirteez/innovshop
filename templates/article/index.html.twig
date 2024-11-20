@@ -7,26 +7,30 @@
         <div class="mgy-4">
             <h2 class="mgy-2">Notre catalogue</h2>
 
-            <form method="GET" action="{{ path('article.index') }}" class="mgy-1 filter-sort">
-                <select name="filterBy" id="filterBy" class="select-catalog">
-                    <option value="" disabled selected hidden>Filtrer par :</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}" {% if category.id == filterBy %} selected {% endif %}>
-                            {{ category.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <select name="sortBy" id="sortBy">
-                    <option value="" disabled selected hidden>Trier par :</option>
-                    <option value="title_asc">Ordre alphabétique (a - z)</option>
-                    <option value="title_desc">Ordre alphabétique inversé (z - a)</option>
-                    <option value="price_asc">Prix croissant &uarr;</option>
-                    <option value="price_desc">Prix décroissant &darr;</option>
-                </select>
-            </form>
+            <div class="parameters col-1">
+                <form id="filterForm" method="GET" action="{{ path('article.index') }}" class="mgy-1 filter-sort">
+                    <select name="filterBy" id="filterBy" class="select-catalog">
+                        <option value="" disabled selected hidden>Filtrer par :</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if category.id == filterBy %} selected {% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <select name="sortBy" id="sortBy">
+                        <option value="" disabled selected hidden>Trier par :</option>
+                        <option value="title_asc" {% if sortBy == 'title_asc' %} selected {% endif %}>Ordre alphabétique (a - z)</option>
+                        <option value="title_desc" {% if sortBy == 'title_desc' %} selected {% endif %}>Ordre alphabétique inversé (z - a)</option>
+                        <option value="price_asc" {% if sortBy == 'price_asc' %} selected {% endif %}>Prix croissant &uarr;</option>
+                        <option value="price_desc" {% if sortBy == 'price_desc' %} selected {% endif %}>Prix décroissant &darr;</option>
+                    </select>
+                </form>
+                <button id="deleteFilters" style="display: none;">Effacer tous les filtres</button>
+            </div>
 
 
-            <div class="catalog {% if articles|length < 4 %}few-items{% endif %}">
+
+            <div id="catalogContainer" class="catalog {% if articles|length < 4 %}few-items{% endif %}">
                 {% for article in articles %}
                     <div class="article-catalog pdgy-1">
                         <img src="/images/uploads/{{ article.images[0] }}" alt="">
@@ -44,7 +48,7 @@
             <div class="boutonPaginate">
                 <!-- Bouton précédent -->
                 {% if page > 1 %}
-                    <a href="{{ path('article.index', {page: page - 1, filterBy: filterBy, sortBy: sortBy}) }}"><i class="fa-solid fa-chevron-left"></i></a>
+                    <a href="{{ path('article.index', app.request.query.all | merge({'page': page - 1})) }}"><i class="fa-solid fa-chevron-left"></i></a>
                 {% endif %}
                 <!-- Liste des pages -->
                 {% for page in articles.paginationData.pagesInRange %}
@@ -54,7 +58,7 @@
                 {% endfor %}
                 <!-- Bouton suivant -->
                 {% if page < maxPage %}
-                    <a href="{{ path('article.index', {page: page + 1, filterBy: filterBy, sortBy: sortBy}) }}"><i class="fa-solid fa-chevron-right"></i></a>
+                    <a href="{{ path('article.index', app.request.query.all | merge({'page': page + 1})) }}"><i class="fa-solid fa-chevron-right"></i></a>
                 {% endif %}
             </div>
         </div>
