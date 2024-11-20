@@ -17,15 +17,22 @@ class ArticleController extends AbstractController
     public function index(Request $request, ArticleRepository $repository): Response
     {
         $page = $request->query->getInt('page', 1);
-        $perPage = 4;
+        $perPage = 8;
 
-        $articles = $repository->paginateArticles($page, $perPage);
+        $filterBy = $request->query->get('filterBy');
+        $sortBy = $request->query->get('sortBy');
+
+
+
+        $articles = $repository->paginateArticles($page, $perPage, $filterBy, $sortBy);
         $maxPage = ceil($articles->getTotalItemCount() / $perPage);
 
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
-            'maxPage' => $maxPage,
+            'maxPage' => ceil($articles->getTotalItemCount() / $perPage),
             'page' => $page,
+            'filterBy' => $filterBy,
+            'sortBy' => $sortBy,
         ]);
     }
 

@@ -20,24 +20,39 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    public function paginateArticles(int $page, int $perPage): PaginationInterface {
+    public function paginateArticles(int $page, int $perPage, ?int $filterBy = null, ?string $sortBy = null): PaginationInterface {
+
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->leftJoin('a.categories', 'c') // Si `category` est une relation dans `Article`
+            ->addSelect('c');
+
+        if ($filterBy) {
+            $queryBuilder->andWhere('c.id = :category')
+                ->setParameter('category', $filterBy);
+        }
+
+        switch ($sortBy) {
+            case 'title_asc':
+                $queryBuilder->orderBy('a.title', 'ASC');
+                break;
+            case 'title_desc':
+                $queryBuilder->orderBy('a.title', 'DESC');
+                break;
+            case 'price_asc':
+                $queryBuilder->orderBy('a.price', 'ASC');
+                break;
+            case 'price_desc':
+                $queryBuilder->orderBy('a.price', 'DESC');
+                break;
+            default:
+                $queryBuilder->orderBy('a.createdAt', 'DESC');
+        }
 
         return $this->paginator->paginate(
-            $this->createQueryBuilder('a'),
+            $queryBuilder->getQuery(),
             $page,
-            $perPage
+            $perPage,
         );
-
-        /*
-        return new Paginator($this
-            ->createQueryBuilder('a')
-            ->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults(4)
-            ->getQuery()
-            ->setHint(Paginator::HINT_ENABLE_DISTINCT, false),
-            false
-        );
-        */
     }
 
     //    /**

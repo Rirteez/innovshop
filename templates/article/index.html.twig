@@ -3,25 +3,60 @@
 {% block title %}InnovShop - Catalogue{% endblock %}
 
 {% block body %}
-    Page catalogue<br>
+    <div class="container">
+        <div class="mgy-4">
+            <h2 class="mgy-2">Notre catalogue</h2>
 
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias asperiores beatae ducimus, excepturi facilis minus molestiae optio praesentium quae quaerat quas quis quisquam ratione sequi sunt tempore veniam voluptatibus! Quia!
-    
-    <ul>
-        {% for article in articles %}
-        <li>
-            <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
-        </li>
-        {% endfor %}
-    </ul>
+            <form method="GET" action="{{ path('article.index') }}" class="mgy-1 filter-sort">
+                <select name="filterBy" id="filterBy" class="select-catalog">
+                    <option value="" disabled selected hidden>Filtrer par :</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id == filterBy %} selected {% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <select name="sortBy" id="sortBy">
+                    <option value="" disabled selected hidden>Trier par :</option>
+                    <option value="title_asc">Ordre alphabétique (a - z)</option>
+                    <option value="title_desc">Ordre alphabétique inversé (z - a)</option>
+                    <option value="price_asc">Prix croissant &uarr;</option>
+                    <option value="price_desc">Prix décroissant &darr;</option>
+                </select>
+            </form>
 
-    <div class="boutonPage">
-        {% if page > 1 %}
-            <a href="{{ path('article.index', {page: page - 1}) }}">Page précédente</a>
-        {% endif %}
-        {% if page < maxPage %}
-            <a href="{{ path('article.index', {page: page + 1}) }}">Page suivante</a>
-        {% endif %}
+
+            <div class="catalog {% if articles|length < 4 %}few-items{% endif %}">
+                {% for article in articles %}
+                    <div class="article-catalog pdgy-1">
+                        <img src="/images/uploads/{{ article.images[0] }}" alt="">
+
+                        <h3 class="h3-article">
+                            <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
+                        </h3>
+
+                        <p>{{ article.price }} €</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="boutonPaginate">
+                <!-- Bouton précédent -->
+                {% if page > 1 %}
+                    <a href="{{ path('article.index', {page: page - 1, filterBy: filterBy, sortBy: sortBy}) }}"><i class="fa-solid fa-chevron-left"></i></a>
+                {% endif %}
+                <!-- Liste des pages -->
+                {% for page in articles.paginationData.pagesInRange %}
+                    <a href="{{ path('article.index', app.request.query.all | merge({'page': page})) }}" class="boutonPage {% if page == articles.currentPageNumber %}active{% endif %}">
+                        {{ page }}
+                    </a>
+                {% endfor %}
+                <!-- Bouton suivant -->
+                {% if page < maxPage %}
+                    <a href="{{ path('article.index', {page: page + 1, filterBy: filterBy, sortBy: sortBy}) }}"><i class="fa-solid fa-chevron-right"></i></a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-
 {% endblock %}

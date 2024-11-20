@@ -31,4 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialisation pour assurer que le premier item est bien affiché
         updateCarousel();
     })
+
+    const selects = document.querySelectorAll('form.filter-sort select');const catalog = document.querySelector('.catalog');
+
+    selects.forEach(select => {
+        select.addEventListener('change', () => {
+            const form = select.closest('form');
+            const formData = new FormData(form);
+
+            const params = new URLSearchParams();
+            for (const [key, value] of formData.entries()) {
+                params.append(key, value);
+            }
+            window.location.href = `${form.action}?${params.toString()}`;
+        })
+    })
 });
