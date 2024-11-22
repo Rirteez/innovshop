@@ -3,13 +3,46 @@
 {% block title %}InnovShop - {{ article.title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ article.title }}</h1>
+    <div class="container">
 
-    <p>{{ article.description | nl2br }}</p>
+        <p>Ici il y aura un fil d'ariane</p>
 
-    <p>{{ article.price }} €</p>
+        <div class="row">
 
-    {% for image in article.images %}
-        <img src="/images/uploads/{{ image }}" alt="">
-    {% endfor %}
+
+            <div class="images-article col-2">
+                <img src="/images/uploads/{{ article.images[0] }}" alt="">
+                <div class="selector-images">
+                    {% for image in article.images %}
+                        <img class="select-image" src="/images/uploads/{{ image }}" alt="">
+                    {% endfor %}
+                </div>
+            </div>
+
+
+
+
+            <div class="content-article col-2">
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.description | raw }}</p>
+
+                <p>{{ article.price }} €</p>
+
+                <h4>Coloris disponibles</h4>
+                <form action="">
+                    <select name="" id="">
+                        {% for color in article.colors %}
+                            <option value="{{ color }}">{{ color }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <p>{{ article.descriptionDetail | raw }}</p>
+
+
+
+    </div>
+
 {% endblock %}

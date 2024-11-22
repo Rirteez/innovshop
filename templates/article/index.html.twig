@@ -9,14 +9,18 @@
 
             <div class="parameters col-1">
                 <form id="filterForm" method="GET" action="{{ path('article.index') }}" class="mgy-1 filter-sort">
-                    <select name="filterBy" id="filterBy" class="select-catalog">
-                        <option value="" disabled selected hidden>Filtrer par :</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}" {% if category.id == filterBy %} selected {% endif %}>
-                                {{ category.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                    <div>
+                        <select name="filterBy" id="filterBy" class="select-catalog">
+                            <option value="" disabled selected hidden>Filtrer par :</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.id == filterBy %} selected {% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <a href="/catalog" class="deleteFilter" {% if (app.request.query.all is empty) %}hidden{% endif %}>Supprimer les filtres<i class="fa-solid fa-xmark" style="margin-left: 1rem;"></i></a>
+                    </div>
+
                     <select name="sortBy" id="sortBy">
                         <option value="" disabled selected hidden>Trier par :</option>
                         <option value="title_asc" {% if sortBy == 'title_asc' %} selected {% endif %}>Ordre alphabétique (a - z)</option>

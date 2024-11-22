@@ -51,7 +51,7 @@ input, select {
     font-family: "Noto Sans", sans-serif;
     height: 2.3em;
     border: #d1d1d1 solid 1px;
-    border-radius: 5px;
+    border-radius: 0.3rem;
     box-sizing: border-box;
 
     &:hover {
@@ -103,6 +103,9 @@ footer {
 /* Largeur de colonne */
 .col-1 {
     width: 100%;
+}
+.col-3-4 {
+    width: 75%;
 }
 .col-2 {
     width: 50%;
@@ -476,7 +479,14 @@ footer {
         color: #4d307e;
     }
 }
-
+.deleteFilter {
+    font-size: 0.8rem;
+    margin-left: 1rem;
+    background-color: #f7f4fc;
+    border: #ab9cc5 1px solid;
+    border-radius: 0.3rem;
+    padding: 0.32rem 1rem;
+}
 .filter-sort {
     display: flex;
     justify-content: space-between;
@@ -559,5 +569,35 @@ footer {
             background-color: #3b2465;
             color: white;
         }
+    }
+}
+/* --------------------------------------------------- */
+/* --------------------- article --------------------- */
+/* --------------------------------------------------- */
+.images-article {
+    display: flex;
+
+    .selector-images {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    img {
+        max-width: 70%;
+        object-fit: cover;
+    }
+
+    &.select-image {
+        display: block;
+        max-width: 20%;
+    }
+}
+
+.content-article {
+
+
+    h4 {
+        font-weight: 200;
     }
 }

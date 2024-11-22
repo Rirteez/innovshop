@@ -30,7 +30,7 @@
                                         <!-- La div qui contient la description -->
                                         <div class="description-item">
                                             <h1>{{ article.title }}</h1>
-                                            <p>{{ article.description }}</p>
+                                            <p>{{ article.description | raw }}</p>
                                             <div class="prix-panier" >
                                                 <p style="margin:0;">{{ article.price }} €</p>
                                                 <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">Voir la page du produit</a>
@@ -79,7 +79,7 @@
                                         <!-- La div qui contient la description -->
                                         <div class="description-item">
                                             <h1>{{ article.title }}</h1>
-                                            <p>{{ article.description }}</p>
+                                            <p>{{ article.description | raw }}</p>
                                             <div class="prix-panier" >
                                                 <p style="margin:0;">{{ article.price }} €</p>
                                                 <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">Voir la page du produit</a>

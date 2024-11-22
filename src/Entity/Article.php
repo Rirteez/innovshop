@@ -57,6 +57,21 @@ class Article
     #[ORM\Column]
     private ?bool $flashOrNo = null;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $colors = [];
+
+    public const COLORS = [
+        'Blanc' => 'Blanc',
+        'Bleu' => 'Bleu',
+        'Gris' => 'Gris',
+        'Jaune' => 'Jaune',
+        'Noir' => 'Noir',
+        'Orange' => 'Orange',
+        'Rouge' => 'Rouge',
+        'Vert' => 'Vert',
+        'Violet' => 'Violet',
+    ];
+
 
     public function __construct()
     {
@@ -230,6 +245,17 @@ class Article
     {
         $this->flashOrNo = $flashOrNo;
 
+        return $this;
+    }
+
+    public function getColors(): ?array
+    {
+        return $this->colors;
+    }
+
+    public function setColors(?array $colors): static
+    {
+        $this->colors = $colors;
         return $this;
     }
 }
