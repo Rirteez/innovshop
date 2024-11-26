@@ -9,32 +9,36 @@
 
             <div class="parameters col-1">
                 <form id="filterForm" method="GET" action="{{ path('article.index') }}" class="mgy-1 filter-sort">
-                    <div>
-                        <select name="filterBy" id="filterBy" class="select-catalog">
-                            <option value="" disabled selected hidden>Filtrer par :</option>
-                            {% for category in categories %}
-                                <option value="{{ category.id }}" {% if category.id == filterBy %} selected {% endif %}>
-                                    {{ category.name }}
-                                </option>
-                            {% endfor %}
+                    <div class="filter-selector">
+                        <div class="filterBy">
+                            <select name="filterBy[]"
+                                    id="filterBy"
+                                    multiple>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if category.id in filterBy %} selected {% endif %}>
+                                        {{ category.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <select name="sortBy" id="sortBy">
+                            <option value="" disabled selected hidden>Trier par :</option>
+                            <option value="title_asc" {% if sortBy == 'title_asc' %} selected {% endif %}>Ordre alphabétique (a - z)</option>
+                            <option value="title_desc" {% if sortBy == 'title_desc' %} selected {% endif %}>Ordre alphabétique inversé (z - a)</option>
+                            <option value="price_asc" {% if sortBy == 'price_asc' %} selected {% endif %}>Prix croissant &uarr;</option>
+                            <option value="price_desc" {% if sortBy == 'price_desc' %} selected {% endif %}>Prix décroissant &darr;</option>
                         </select>
-                        <a href="/catalog" class="deleteFilter" {% if (app.request.query.all is empty) %}hidden{% endif %}>Supprimer les filtres<i class="fa-solid fa-xmark" style="margin-left: 1rem;"></i></a>
                     </div>
 
-                    <select name="sortBy" id="sortBy">
-                        <option value="" disabled selected hidden>Trier par :</option>
-                        <option value="title_asc" {% if sortBy == 'title_asc' %} selected {% endif %}>Ordre alphabétique (a - z)</option>
-                        <option value="title_desc" {% if sortBy == 'title_desc' %} selected {% endif %}>Ordre alphabétique inversé (z - a)</option>
-                        <option value="price_asc" {% if sortBy == 'price_asc' %} selected {% endif %}>Prix croissant &uarr;</option>
-                        <option value="price_desc" {% if sortBy == 'price_desc' %} selected {% endif %}>Prix décroissant &darr;</option>
-                    </select>
+                    <div>
+                        <button type="submit" class="button button-primary">Appliquer les filtres</button>
+                    </div>
                 </form>
-                <button id="deleteFilters" style="display: none;">Effacer tous les filtres</button>
             </div>
 
 
 
-            <div id="catalogContainer" class="catalog {% if articles|length < 4 %}few-items{% endif %}">
+            <div id="catalogContainer" class="catalog">
                 {% for article in articles %}
                     <div class="article-catalog pdgy-1">
                         <img src="/images/uploads/{{ article.images[0] }}" alt="">
@@ -46,6 +50,13 @@
                         <p>{{ article.price }} €</p>
                     </div>
                 {% endfor %}
+                {% set remainder = articles|length % 4 %}
+                {% if remainder > 0 %}
+                    {% set fillers = 4 - remainder %}
+                    {% for i in 1..fillers %}
+                        <div class="article-catalog invisible-card"></div>
+                    {% endfor %}
+                {% endif %}
             </div>
 
 

@@ -1,3 +1,5 @@
+@use "sass:math";
+@use "sass:color";
 
 * {
     margin: 0;
@@ -18,7 +20,7 @@ $total-items: 10;
 
 @for $i from 1 through $total-items {
     .color-#{$i} {
-        background-color: mix(#f7f4fc, $base-color, $i * (100% / $total-items));
+        background-color: color.mix(#f7f4fc, $base-color, $i * math.div(100%, $total-items));
     }
 }
 /* --------------------------------------------------- */
@@ -487,12 +489,20 @@ footer {
     border-radius: 0.3rem;
     padding: 0.32rem 1rem;
 }
+.filterBy {
+    width: 15rem;
+}
+
+
+.filter-selector {
+    display: flex;
+    gap: 1.5rem;
+}
+
+
 .filter-sort {
     display: flex;
     justify-content: space-between;
-}
-.select-catalog {
-    width: 16rem;
 }
 .catalog {
     display: flex;
@@ -500,8 +510,9 @@ footer {
     gap: 1.5rem;
     justify-content: space-between;
 
-    &.few-items {
-        justify-content: flex-start;
+    .invisible-card{
+        visibility: hidden;
+        pointer-events: none;
     }
 }
 .article-catalog {

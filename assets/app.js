@@ -1,5 +1,7 @@
 import './bootstrap.js';
 import './styles/app.scss';
+import 'select2';
+import 'select2/dist/css/select2.css';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,20 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     /////////////////////////////////////// GESTION DES FILTRES ET TRIS DU CATALOGUE ///////////////////////////////////
-    const selects = document.querySelectorAll('form.filter-sort select');
-
-    selects.forEach(select => {
-        select.addEventListener('change', () => {
-            const form = select.closest('form');
-            const formData = new FormData(form);
-
-            const params = new URLSearchParams();
-            for (const [key, value] of formData.entries()) {
-                params.append(key, value);
-            }
-            window.location.href = `${form.action}?${params.toString()}`;
-        })
-    })
+    // Initialisation de Select2
+    $('#filterBy').select2({
+        placeholder: "Sélectionnez des catégories",
+        allowClear: true,
+        width: '100%' // Adapte la largeur au conteneur
+    });
 
 
 });

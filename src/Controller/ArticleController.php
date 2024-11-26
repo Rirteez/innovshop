@@ -19,7 +19,7 @@ class ArticleController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $perPage = 8;
 
-        $filterBy = $request->query->get('filterBy');
+        $filterBy = $request->query->all('filterBy', []);
         $sortBy = $request->query->get('sortBy');
 
         $articles = $repository->paginateArticles($page, $perPage, $filterBy, $sortBy);

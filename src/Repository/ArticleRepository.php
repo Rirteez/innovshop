@@ -20,15 +20,15 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    public function paginateArticles(int $page, int $perPage, ?int $filterBy = null, ?string $sortBy = null): PaginationInterface {
+    public function paginateArticles(int $page, int $perPage, ?array $filterBy = [], ?string $sortBy = null): PaginationInterface {
 
         $queryBuilder = $this->createQueryBuilder('a')
-            ->leftJoin('a.categories', 'c') // Si `category` est une relation dans `Article`
+            ->leftJoin('a.categories', 'c') // Jointure entre article et categorie
             ->addSelect('c');
 
-        if ($filterBy) {
-            $queryBuilder->andWhere('c.id = :category')
-                ->setParameter('category', $filterBy);
+        if (!empty($filterBy)) {
+            $queryBuilder->andWhere('c.id IN (:categories)')
+                ->setParameter('categories', $filterBy);
         }
 
         switch ($sortBy) {
