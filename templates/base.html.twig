@@ -51,7 +51,11 @@
                     <div class="row">
                         {% for category in categories %}
                             <li class="pdx-1 nav-item color-{{ loop.index }}">
-                                <h3><a href="/catalog?filterBy={{ category.id }}">{{ category.name }}</a></h3>
+                                <h3><a href="/catalog?filterBy[]={{ category.id }}">{{ category.name }}</a></h3>
+
+                                <div class="description-category">
+                                    {{ category.description | raw }}
+                                </div>
                             </li>
                         {% endfor %}
                         <li class="nav-item color-{{ totalCategories + 1 }}"><h3><a href="/catalog">Tous les articles</a></h3></li>
@@ -59,6 +63,7 @@
                 </ul>
             </nav>
         </div>
+        <div class="description-category"></div>
     </header>
 
     <body>

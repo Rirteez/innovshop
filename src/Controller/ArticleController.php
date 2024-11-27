@@ -17,7 +17,7 @@ class ArticleController extends AbstractController
     public function index(Request $request, ArticleRepository $repository): Response
     {
         $page = $request->query->getInt('page', 1);
-        $perPage = 8;
+        $perPage = 16;
 
         $filterBy = $request->query->all('filterBy', []);
         $sortBy = $request->query->get('sortBy');

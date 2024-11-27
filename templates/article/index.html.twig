@@ -30,7 +30,8 @@
                         </select>
                     </div>
                     <div>
-                        <button type="submit" class="button button-primary">Appliquer les filtres</button>
+                        <a href="/catalog" class="deleteFilter" {% if app.request.query.all is empty %}hidden{% endif %}>Supprimer tous les filtres <i class="fa-solid fa-xmark"></i></a>
+                        <button type="submit" class="button button--primary">Appliquer les filtres</button>
                     </div>
                 </form>
             </div>
@@ -40,13 +41,19 @@
             <div id="catalogContainer" class="catalog">
                 {% for article in articles %}
                     <div class="article-catalog pdgy-1">
-                        <img src="/images/uploads/{{ article.images[0] }}" alt="">
+                        <div>
+                            <img src="/images/uploads/{{ article.images[0] }}" alt="">
 
-                        <h3 class="h3-article">
-                            <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
-                        </h3>
+                            <h3 class="h3-article">
+                                <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
+                            </h3>
+                            <div class="description-article">{{ article.description | raw }}</div>
+                        </div>
+                        <div class="row prix-panier-article">
+                            <p class="prix-article">{{ article.price }} €</p>
+                            <a href="#" class="button button--xsmall button--secondary">Ajouter au panier</a>
+                        </div>
 
-                        <p>{{ article.price }} €</p>
                     </div>
                 {% endfor %}
                 {% set remainder = articles|length % 4 %}
