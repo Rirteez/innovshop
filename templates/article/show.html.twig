@@ -7,14 +7,22 @@
 
         <p>Ici il y aura un fil d'ariane</p>
 
-        <div class="row">
+        <div class="row mgy-4">
 
 
             <div class="images-article col-2">
-                <img src="/images/uploads/{{ article.images[0] }}" alt="">
-                <div class="selector-images">
+
+                <!-- Image principale -->
+                <div class="main-image-container">
+                    <img src="/images/uploads/{{ article.images[0] }}" alt="" id="mainImage"/>
+                </div>
+
+                <!-- Ligne de miniatures -->
+                <div class="selector-images-row">
                     {% for image in article.images %}
-                        <img class="select-image" src="/images/uploads/{{ image }}" alt="">
+                        <div class="row-4">
+                            <img class="select-image" src="/images/uploads/{{ image }}" alt=""/>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
@@ -23,23 +31,28 @@
 
 
             <div class="content-article col-2">
-                <h2>{{ article.title }}</h2>
-                <p>{{ article.description | raw }}</p>
+                <div>
+                    <h2 class="mgb-2">{{ article.title }}</h2>
+                    <p>{{ article.description | raw }}</p>
+                    <h4 class="mgy-2">Coloris disponibles</h4>
+                    <form action="">
+                        <select name="" id="">
+                            {% for color in article.colors %}
+                                <option value="{{ color }}">{{ color }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
 
-                <p>{{ article.price }} €</p>
+                </div>
+                <div class="prix-panier-article-show">
+                    <p class="prix-article">{{ article.price }} €</p>
+                    <button class="button button--primary">Ajouter au panier</button>
+                </div>
 
-                <h4>Coloris disponibles</h4>
-                <form action="">
-                    <select name="" id="">
-                        {% for color in article.colors %}
-                            <option value="{{ color }}">{{ color }}</option>
-                        {% endfor %}
-                    </select>
-                </form>
             </div>
         </div>
-
-        <p>{{ article.descriptionDetail | raw }}</p>
+        <div class="description-detail-article mgt-4">{{ article.descriptionDetail | raw }}</div>
+        <div class="separation"></div>
 
 
 

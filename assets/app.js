@@ -45,4 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    //////////////////////////////////// GESTION DE LA PHOTO AFFICHEE SUR LA PAGE IMAGE ////////////////////////////////
+    const thumbnails = document.querySelectorAll('.select-image'); // Sélectionne toutes les miniatures
+    const mainImage = document.getElementById('mainImage'); // Sélectionne l'image principale
+
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', () => {
+            // Change la source de l'image principale
+            mainImage.src = thumbnail.src;
+
+            // Optionnel : ajoute une classe active pour marquer la miniature sélectionnée
+            thumbnails.forEach(t => t.classList.remove('active-thumbnail'));
+            thumbnail.classList.add('active-thumbnail');
+        });
+    });
 });
