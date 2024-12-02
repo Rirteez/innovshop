@@ -44,24 +44,4 @@ class ArticleController extends AbstractController
             'article' => $article,
         ]);
     }
-
-    #[Route('/catalog/{id}/edit', name: 'article.edit', requirements:['id' => '\d+', ])]
-    public function edit(Article $article, Request $request, EntityManagerInterface $em): Response
-    {
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('image')->getData();
-            $filename = $article->getId() . '.' . $file->getClientOriginalExtension();
-            $file->move($this->getParameter('kernel.project_dir') . '/public/images/uploads', $filename);
-            $article->setImage($filename);
-            $em->flush();
-            $this->addFlash('success', 'Modification réussie');
-            return $this->redirectToRoute('article.index');
-        }
-        return $this->render('article/edit.html.twig', [
-            'article' => $article,
-            'formEditArticle' => $form
-        ]);
-    }
 }

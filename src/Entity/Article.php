@@ -61,15 +61,15 @@ class Article
     private ?array $colors = [];
 
     public const COLORS = [
-        'Blanc' => 'Blanc',
-        'Bleu' => 'Bleu',
-        'Gris' => 'Gris',
-        'Jaune' => 'Jaune',
-        'Noir' => 'Noir',
-        'Orange' => 'Orange',
-        'Rouge' => 'Rouge',
-        'Vert' => 'Vert',
-        'Violet' => 'Violet',
+        'Blanc' => '#ffffff',
+        'Bleu' => '#0056ff',
+        'Gris' => '#909090',
+        'Jaune' => '#ffe800',
+        'Noir' => '#000000',
+        'Orange' => '#ff8700',
+        'Rouge' => '#de0000',
+        'Vert' => '#009e09',
+        'Violet' => '#7000da',
     ];
 
 

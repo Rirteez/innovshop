@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InnovShop - Connexion{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        {{ form_start(form) }}
+            <div class="form-login">
+                {{ form_row(form.nom) }}
+                {{ form_row(form.prenom) }}
+                {{ form_row(form.mail) }}
+                {{ form_row(form.password) }}
+                <label for="client_password-confirm" class="form-label required">Password confirm</label>
+                <input type="text" name="password-confirm">
+                <button type="submit" class="button button--primary">S'inscrire</button>
+            </div>
+        {{ form_end(form, {'render_rest': false}) }}
+
+    </div>
+{% endblock %}

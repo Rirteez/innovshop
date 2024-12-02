@@ -4,14 +4,16 @@
 
 {% block body %}
     <div class="container">
-
-        <p>Ici il y aura un fil d'ariane</p>
+        <div class="ariane">
+            <a href="/"><i class="fa-solid fa-house"></i></a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="/catalog?filterBy[]={{ article.categories[0].id }}">{{ article.categories[0] }}</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
+        </div>
 
         <div class="row mgy-4">
-
-
             <div class="images-article col-2">
-
                 <!-- Image principale -->
                 <div class="main-image-container">
                     <img src="/images/uploads/{{ article.images[0] }}" alt="" id="mainImage"/>
@@ -34,26 +36,46 @@
                 <div>
                     <h2 class="mgb-2">{{ article.title }}</h2>
                     <p>{{ article.description | raw }}</p>
-                    <h4 class="mgy-2">Coloris disponibles</h4>
-                    <form action="">
-                        <select name="" id="">
-                            {% for color in article.colors %}
-                                <option value="{{ color }}">{{ color }}</option>
-                            {% endfor %}
-                        </select>
-                    </form>
-
+                    <div class="separation separation--bottom"></div>
+                    {% if article.colors is not empty %}
+                        <h4 class="mgy-2">Coloris disponibles</h4>
+                        <form action="">
+                            <div class="row colors-range-article">
+                                {% for color in article.colors %}
+                                    <input
+                                            type="radio"
+                                            name="color-choice"
+                                            id="color-radio-{{ color }}"
+                                            value="{{ color }}"
+                                            class="color-radio {{ color }}" />
+                                    <label
+                                            for="color-radio-{{ color }}"
+                                            class="color-label color-label--{{ color }}" >
+                                        <span class="sr-only">{{ color }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </form>
+                    {% else %}
+                        <p>Il n'y a pas d'options disponibles pour cet article.</p>
+                    {% endif %}
                 </div>
-                <div class="prix-panier-article-show">
-                    <p class="prix-article">{{ article.price }} €</p>
-                    <button class="button button--primary">Ajouter au panier</button>
+                <div>
+                    <div class="separation separation--bottom"></div>
+                    <div class="prix-panier-article-show">
+                        <p class="prix-article">{{ article.price }} €</p>
+                        <button class="button button--primary">Ajouter au panier</button>
+                    </div>
                 </div>
-
             </div>
         </div>
         <div class="description-detail-article mgt-4">{{ article.descriptionDetail | raw }}</div>
-        <div class="separation"></div>
+        <div class="separation separation--bottom"></div>
 
+
+        <div class="row">
+
+        </div>
 
 
     </div>

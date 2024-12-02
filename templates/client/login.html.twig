@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InnovShop - Connexion{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        {{ form_start(form) }}
+            <div class="form-login">
+                {{ form_row(form.mail) }}
+                {{ form_row(form.password) }}
+            </div>
+        {{ form_end(form, {'render_rest': false}) }}
+
+    </div>
+{% endblock %}
