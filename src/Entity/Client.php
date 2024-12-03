@@ -6,9 +6,13 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-class Client
+/**
+ * @UniqueEntity(fields={"mail"}, message="Un compte existe déjà avec cet email.")
+ */
+class Client implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,15 +20,32 @@ class Client
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    /**
+     * @Assert\NotBlank(message="Le nom est obligatoire.")
+     * @Assert\Length(min=2, max=50, minMessage="Le nom doit comporter au moins 2 caractères.")
+     */
     private ?string $nom = null;
 
+
     #[ORM\Column(length: 50)]
+    /**
+     * @Assert\NotBlank(message="Le prénom est obligatoire.")
+     * @Assert\Length(min=2, max=50, minMessage="Le prénom doit comporter au moins 2 caractères.")
+     */
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    /**
+     * @Assert\NotBlank(message="L'email est obligatoire.")
+     * @Assert\Email(message="L'adresse email n'est pas valide.")
+     */
     private ?string $mail = null;
 
     #[ORM\Column(length: 255)]
+    /**
+     * @Assert\NotBlank(message="Le mot de passe est obligatoire.")
+     * @Assert\Length(min=6, max=255, minMessage="Le mot de passe doit comporter au moins 6 caractères.")
+     */
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -34,6 +55,9 @@ class Client
     private ?string $complement_adr = null;
 
     #[ORM\Column(length: 5)]
+    /**
+     * @Assert\Length(min=5, max=5, minMessage="Le code postal doit comporter exactement 5 caractères.")
+     */
     private ?string $CP = null;
 
     #[ORM\Column(length: 255)]

@@ -1,21 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}InnovShop - Connexion{% endblock %}
+{% block title %}InnovShop - Inscription{% endblock %}
 
 {% block body %}
     <div class="container">
 
-        {{ form_start(form) }}
-            <div class="form-login">
-                {{ form_row(form.nom) }}
-                {{ form_row(form.prenom) }}
-                {{ form_row(form.mail) }}
-                {{ form_row(form.password) }}
-                <label for="client_password-confirm" class="form-label required">Password confirm</label>
-                <input type="text" name="password-confirm">
-                <button type="submit" class="button button--primary">S'inscrire</button>
-            </div>
-        {{ form_end(form, {'render_rest': false}) }}
+        <h2 class="titre-login-register mgy-2">Inscrivez vous</h2>
+        <div class="form-container">
+            {{ form_start(form) }}
+                <div class="form-login-register">
+                    {{ form_widget(form.nom, {'attr': {'placeholder': 'Nom de famille', 'class': 'input-form-login'}}) }}
+                    {{ form_widget(form.prenom, {'attr': {'placeholder': 'Prénom', 'class': 'input-form-login mgt-1'}}) }}
+                    {{ form_widget(form.mail, {'attr': {'type': 'password', 'placeholder': 'Adresse email', 'class': 'input-form-login mgt-1'}}) }}
+                    {{ form_widget(form.password.first, {'attr': {'placeholder': 'Mot de passe', 'class': 'input-form-login mgt-1'}}) }}
+                    {{ form_widget(form.password.second, {'attr': {'placeholder': 'Confirmer le mot de passe', 'class': 'input-form-login mgt-1'}}) }}
+                    <button type="submit" class="button button--primary btn-login mgt-2">Inscription</button>
+                </div>
+            {{ form_end(form, {'render_rest': true}) }}
+
+            {{ form_errors(form) }}
+        </div>
+
+
+
+
 
     </div>
 {% endblock %}

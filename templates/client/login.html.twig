@@ -5,12 +5,18 @@
 {% block body %}
     <div class="container">
 
-        {{ form_start(form) }}
-            <div class="form-login">
-                {{ form_row(form.mail) }}
-                {{ form_row(form.password) }}
-            </div>
-        {{ form_end(form, {'render_rest': false}) }}
+        <h2 class="titre-login-register mgy-2">Connectez vous</h2>
+        <div class="form-container">
+            <form name="client" method="post" class="col-3">
+                <div class="form-login-register">
+                    {{ form_widget(form.mail, {'attr': {'placeholder': 'Adresse email', 'class': 'input-form-login'}}) }}
+                    {{ form_widget(form.password.first, {'attr': {'placeholder': 'Mot de passe', 'class': 'input-form-login mgt-1'}}) }}
+                    <button type="submit" class="button button--primary btn-login mgt-2">Connexion</button>
+                </div>
+
+            </form>
+        </div>
+
 
     </div>
 {% endblock %}
