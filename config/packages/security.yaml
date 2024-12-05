@@ -4,14 +4,29 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        app_user_provider: # Nom du fournisseur
+            entity:
+                class: App\Entity\Client
+                property: mail # Le champ utilisé pour l'identifiant (email ici)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+
+            form_login:
+                login_path: client.login # La route de la page de connexion
+                check_path: client.login # La route où Symfony vérifie les identifiants
+                enable_csrf: true # Active la protection CSRF
+                csrf_token_id: authenticate    # Identifiant du token CSRF
+                username_parameter: _username  # Nom du champ pour le nom d'utilisateur
+                password_parameter: _password  # Nom du champ pour le mot de passe
+
+            logout:
+                path: client.logout # La route pour se déconnecter
+                target: homepage # Redirection après déconnexion
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -22,6 +37,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/moncompte, roles: ROLE_USER } # Protéger la section /moncompte pour les utilisateurs connectés
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

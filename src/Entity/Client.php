@@ -7,12 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 /**
  * @UniqueEntity(fields={"mail"}, message="Un compte existe déjà avec cet email.")
  */
-class Client implements PasswordAuthenticatedUserInterface
+class Client implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -48,22 +49,22 @@ class Client implements PasswordAuthenticatedUserInterface
      */
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $complement_adr = null;
 
-    #[ORM\Column(length: 5)]
+    #[ORM\Column(length: 5, nullable: true)]
     /**
      * @Assert\Length(min=5, max=5, minMessage="Le code postal doit comporter exactement 5 caractères.")
      */
     private ?string $CP = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $ville = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $pays = null;
 
     /**
@@ -77,9 +78,24 @@ class Client implements PasswordAuthenticatedUserInterface
         $this->factures = new ArrayCollection();
     }
 
+    public function eraseCredentials(): void
+    {
+        // Effacez les données sensibles ici si nécessaire
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles ?? ['ROLE_USER'];
+        return array_unique($roles);
+    }
+
+    public function getUserIdentifier(): string {
+        return $this->mail;
     }
 
     public function getNom(): ?string

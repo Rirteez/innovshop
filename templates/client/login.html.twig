@@ -7,16 +7,34 @@
 
         <h2 class="titre-login-register mgy-2">Connectez vous</h2>
         <div class="form-container">
-            <form name="client" method="post" class="col-3">
+            <form name="client" method="post" action="{{ path('client.login') }}" class="col-3">
                 <div class="form-login-register">
-                    {{ form_widget(form.mail, {'attr': {'placeholder': 'Adresse email', 'class': 'input-form-login'}}) }}
-                    {{ form_widget(form.password.first, {'attr': {'placeholder': 'Mot de passe', 'class': 'input-form-login mgt-1'}}) }}
+                    <input
+                        type="text"
+                        name="_username"
+                        placeholder="Adresse email"
+                        value="{{ last_username }}"
+                        class="input-form-login"
+                    />
+
+                    <input
+                            type="password"
+                            name="_password"
+                            placeholder="Mot de passe"
+                            class="input-form-login mgt-1"
+                    />
+                    <input
+                            type="hidden"
+                            name="_csrf_token"
+                            value="{{ csrf_token('authenticate') }}"
+                    />
                     <button type="submit" class="button button--primary btn-login mgt-2">Connexion</button>
                 </div>
-
+                {% if error %}
+                    <p class="error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                {% endif %}
             </form>
         </div>
-
-
+        <p class="align-center txt-small mgt-1">Vous n'avez pas compte ? <a href="{{ path('client.register') }}">Inscrivez vous !</a></p>
     </div>
 {% endblock %}
