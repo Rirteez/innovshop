@@ -346,8 +346,17 @@ footer {
     color: #4d307e;
     transition: color 0.3s ease;
 
+    a {
+        color: #4d307e;
+        transition: color 0.3s ease;
+    }
+
     &:hover {
         color: #8552dc;
+
+        a {
+            color: #8552dc;
+        }
     }
 }
 .lienMenu {
@@ -389,7 +398,25 @@ footer {
         padding: 0 1em;
     }
 }
-
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+.logout-button {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+.user-dropdown:hover .logout-button {
+    display: block;
+}
 .description-category {
     box-sizing: border-box;
     font-family: "Noto Sans", sans-serif;
@@ -404,12 +431,9 @@ footer {
     font-size: 1rem;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .nav-item:hover .description-category {
     display: block;
 }
-
-
 .lienFooter {
     justify-content: space-around;
     align-items: center;
