@@ -12,26 +12,8 @@ class ClientController extends AbstractController
     #[Route('/moncompte', name: 'client.index')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         return $this->render('client/index.html.twig');
     }
-
-    #[Route('/register', name: 'client.register')]
-    public function register(): Response {
-        $form = $this->createForm(ClientType::class, );
-
-        return $this->render('client/register.html.twig', [
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/login', name: 'client.login')]
-    public function login(): Response {
-        $form = $this->createForm(ClientType::class, );
-
-        return $this->render('client/login.html.twig', [
-            'form' => $form,
-        ]);
-    }
-
-
 }

@@ -1,0 +1,8 @@
+{% use 'form_div_layout.html.twig' %}
+
+{# On redéfinit le bloc form_row pour retirer les classes par défaut #}
+{% block form_row %}
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+{% endblock %}

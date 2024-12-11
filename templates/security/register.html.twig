@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mgt-1">
+
+        <div class="form-login-register">
+            <h1 class="mgy-1">Créer un compte</h1>
+            <div class="col-3">
+                {{ form_start(registerForm) }}
+                {{ form_row(registerForm.prenom) }}
+                {{ form_row(registerForm.nom) }}
+                {{ form_row(registerForm.mail) }}
+                {{ form_row(registerForm.password) }}
+                {{ form_row(registerForm.submit) }}
+                {{ form_end(registerForm) }}
+            </div>
+            <p class="mgt-1 log-in-register">Déjà un compte ? <a href="{{ path('app_login') }}">Connectez-vous ici</a></p>
+        </div>
+    </div>
+{% endblock %}

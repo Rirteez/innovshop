@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="form-login-register">
+            <h1 class="mgy-1">Connectez vous</h1>
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <div class="col-3">
+                <form action="{{ path('app_login') }}" method="post">
+                    <input class="input-login-register" type="text" id="username" name="mail" value="{{ last_username }}" placeholder="Adresse mail" required autofocus>
+                    <input class="mgt-1 input-login-register" type="password" id="password" name="password" placeholder="Mot de passe" required>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button class=" mgt-2 button button--primary" type="submit">Se connecter</button>
+                </form>
+            </div>
+            <p class="mgt-1 log-in-register">Pas encore de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous ici</a></p>
+        </div>
+
+    </div>
+
+{% endblock %}

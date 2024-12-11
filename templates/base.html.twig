@@ -35,10 +35,20 @@
             </div>
 
             <div class="lienMenu col-3">
-                <a href="/moncompte" class="itemMenu">
-                    <span class="material-icons">person</span>
-                    <p>Mon compte</p>
-                </a>
+                <div class="itemMenu itemMenu--user">
+                    <a class="itemMenu" href="/moncompte">
+                        <span class="material-icons">person</span>
+                        {% if app.user %}
+                            <p>{{ app.user.prenom }} {{ app.user.nom }}</p>
+                        {% else %}
+                            <p>Mon compte</p>
+                        {% endif %}
+                    </a>
+                    {% if app.user %}
+                        <div class="log-out"><a class="button button--secondary" href="{{ path('app_logout') }}">Se déconnecter</a></div>
+                    {% endif %}
+                </div>
+
                 <a href="" class="itemMenu">
                     <span class="material-icons">shopping_basket</span>
                     <p>Panier</p>
