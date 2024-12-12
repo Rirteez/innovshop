@@ -59,4 +59,30 @@ document.addEventListener('DOMContentLoaded', () => {
             thumbnail.classList.add('active-thumbnail');
         });
     });
+
+    /////////////////////////////////////////// TITLE SCROLLING RANDOM ARTICLE  ////////////////////////////////////////
+    let isCooldown = false;
+
+    function scrollText() {
+        if (!isCooldown) {
+            scrollingText.scrollLeft += 1;
+
+
+            if (scrollingText.scrollLeft >= scrollingText.scrollWidth - scrollingText.clientWidth) {
+                isCooldown = true;
+                setTimeout(() => {
+                    scrollingText.scrollLeft = 0;
+                    isCooldown = false;
+                    scrollText();
+                }, 1000);
+            } else {
+                // Continue à défiler tant qu'on est pas à la fin
+                requestAnimationFrame(scrollText);
+            }
+        }
+    }
+
+// Initialise l'animation
+    const scrollingText = document.getElementById('scrollingText');
+    scrollText();
 });

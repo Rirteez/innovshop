@@ -73,11 +73,29 @@
         <div class="separation separation--bottom"></div>
 
 
-        <div class="row">
+        <section>
+            <h2>Articles similaires</h2>
+            <div class="row article-like">
+                {% for article in articlesRandom %}
+                    <div class="col-2 article-like-item">
+                        <div class="item-like-content">
+                            <div class="image-item-like">
+                                <img src="/images/uploads/{{ article.images[0] }}">
+                            </div>
 
-        </div>
-
-
+                            <div class="col-2">
+                                <div class="description-item-like">
+                                    <h1 class="mgt-1 scrolling-text" id="scrollingText">{{ article.title }}</h1>
+                                    <p class="price-item-like" style="margin:0;">456 €</p>
+                                    <a class="link-item-like" href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">Voir la page du produit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+        <div class="separation separation--bottom"></div>
     </div>
 
 {% endblock %}

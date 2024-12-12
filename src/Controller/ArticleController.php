@@ -37,11 +37,22 @@ class ArticleController extends AbstractController
     public function show(Request $request, string $slug, int $id, ArticleRepository $repository): Response
     {
         $article = $repository->find($id);
+        $articlesRandom = [];
+        $categories = $article->getCategories();
+
+
+        if(count($categories) > 0){
+            $categoryID = $categories[0]->getId();
+            $articlesRandom = $repository->findTwoByRandom($categoryID, $article->getId());
+        }
+
         if ($article->getSlug() !== $slug) {
             return $this->redirectToRoute('article.show', ['slug' => $article->getSlug(), 'id' => $article->getId()]);
         }
+
         return $this->render('article/show.html.twig', [
             'article' => $article,
+            'articlesRandom' => $articlesRandom,
         ]);
     }
 }

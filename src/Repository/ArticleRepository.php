@@ -55,6 +55,22 @@ class ArticleRepository extends ServiceEntityRepository
         );
     }
 
+    public function findTwoByRandom($categoryID, $currentArticleId): array
+    {
+        $articles = $this->createQueryBuilder('a')
+            ->innerJoin('a.categories', 'c')
+            ->where('c.id = :categoryID')
+            ->andWhere('a.id != :currentArticleId')
+            ->setParameter('categoryID', $categoryID)
+            ->setParameter('currentArticleId', $currentArticleId)
+            ->getQuery()
+            ->getResult();
+
+        shuffle($articles);
+
+        return array_slice($articles,0,2);
+    }
+
     //    /**
     //     * @return Article[] Returns an array of Article objects
     //     */
