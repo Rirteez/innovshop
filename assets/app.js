@@ -82,7 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-// Initialise l'animation
+    // Initialise l'animation
     const scrollingText = document.getElementById('scrollingText');
     scrollText();
+
+
+
+
+
+
+
+
+
+
+
 });

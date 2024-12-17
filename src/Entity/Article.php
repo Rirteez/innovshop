@@ -60,6 +60,13 @@ class Article
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $colors = [];
 
+    /**
+     * @var Collection<int, CartItem>
+     */
+    #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'article')]
+    private Collection $cartItems;
+
+
     public const COLORS = [
         'Blanc' => '#ffffff',
         'Bleu' => '#0056ff',
@@ -79,6 +86,7 @@ class Article
         $this->ligneFactures = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->cartItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -258,4 +266,35 @@ class Article
         $this->colors = $colors;
         return $this;
     }
+
+    /**
+     * @return Collection<int, CartItem>
+     */
+    public function getCartItems(): Collection
+    {
+        return $this->cartItems;
+    }
+
+    public function addCartItem(CartItem $cartItem): static
+    {
+        if (!$this->cartItems->contains($cartItem)) {
+            $this->cartItems->add($cartItem);
+            $cartItem->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartItem(CartItem $cartItem): static
+    {
+        if ($this->cartItems->removeElement($cartItem)) {
+            // set the owning side to null (unless already changed)
+            if ($cartItem->getArticle() === $this) {
+                $cartItem->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

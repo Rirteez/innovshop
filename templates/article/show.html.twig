@@ -39,23 +39,23 @@
                     <div class="separation separation--bottom"></div>
                     {% if article.colors is not empty %}
                         <h4 class="mgy-2">Coloris disponibles</h4>
-                        <form action="">
-                            <div class="row colors-range-article">
-                                {% for color in article.colors %}
-                                    <input
-                                            type="radio"
-                                            name="color-choice"
-                                            id="color-radio-{{ color }}"
-                                            value="{{ color }}"
-                                            class="color-radio {{ color }}" />
-                                    <label
-                                            for="color-radio-{{ color }}"
-                                            class="color-label color-label--{{ color }}" >
-                                        <span class="sr-only">{{ color }}</span>
-                                    </label>
-                                {% endfor %}
-                            </div>
-                        </form>
+                        <div class="row colors-range-article">
+                            {% for color in article.colors %}
+                                <input
+                                        form="cart-form"
+                                        type="radio"
+                                        name="variant"
+                                        id="color-radio-{{ color }}"
+                                        value="{{ color }}"
+                                        class="color-radio {{ color }}"
+                                        {% if loop.first %}checked{% endif %}/>
+                                <label
+                                        for="color-radio-{{ color }}"
+                                        class="color-label color-label--{{ color }}" >
+                                    <span class="sr-only">{{ color }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
                     {% else %}
                         <p>Il n'y a pas d'options disponibles pour cet article.</p>
                     {% endif %}
@@ -64,7 +64,10 @@
                     <div class="separation separation--bottom"></div>
                     <div class="prix-panier-article-show">
                         <p class="prix-article">{{ article.price }} €</p>
-                        <button class="button button--primary">Ajouter au panier</button>
+                        <form action="{{ path('app_cart_add', {'id': article.id}) }}" method="POST" id="cart-form">
+                            <input type="number" name="quantity" value="1" min="1" />
+                            <button type="submit" class="button button--primary">Ajouter au panier</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -97,5 +100,40 @@
         </section>
         <div class="separation separation--bottom"></div>
     </div>
+
+
+    <script>
+        const addToCartForm = document.querySelector('form[action*="/panier/add"]');
+
+        if (addToCartForm) {
+            addToCartForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                const formData = new FormData(addToCartForm); // Récupère les données du formulaire
+
+                fetch(addToCartForm.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json()) // Transforme la réponse JSON
+                    .then(data => {
+                        if (data.success) {
+                            // Affiche une notification
+                            alert('Article ajouté au panier !');
+
+                            // Exemple : Met à jour dynamiquement l'icône panier
+                            const cartIcon = document.querySelector('.cart-count'); // Modifie avec ton sélecteur réel
+                            if (cartIcon) {
+                                let currentCount = parseInt(cartIcon.textContent) || 0;
+                                cartIcon.textContent = currentCount + parseInt(formData.get('quantity'));
+                            }
+                        } else {
+                            alert('Erreur : ' + data.error);
+                        }
+                    })
+                    .catch(error => console.error('Erreur lors de l\'ajout au panier :', error));
+            });
+        }
+    </script>
 
 {% endblock %}

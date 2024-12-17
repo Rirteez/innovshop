@@ -55,14 +55,15 @@
                                 <a class="button button--deny button--small" href="{{ path('app_logout') }}">Se déconnecter</a>
                             </div>
                         </div>
-
                     {% endif %}
                 </div>
 
-                <a href="" class="itemMenu">
+                <a href="{{ path('app_cart') }}" class="itemMenu">
                     <span class="material-icons">shopping_basket</span>
                     <p>Panier</p>
+                    <span id="cart-count" class="cart-count">{{ cartItemCount }}</span>
                 </a>
+
             </div>
         </div>
         <div class="navbar pdgx-2" style="background: linear-gradient(to right, #4d307e 15%, #EEE9F6 15%)">
@@ -89,6 +90,14 @@
     <body>
         <main>
             {% block body %}
+
+                <!-- Popup pour confirmer l'ajout au panier -->
+                <div id="popup" class="popup" style="display: none;">
+                    <div class="popup-content">
+                        <p id="popup-message" class="popup-message"></p>
+                        <button class="close-popup">Fermer</button>
+                    </div>
+                </div>
 
             {% endblock %}
         </main>

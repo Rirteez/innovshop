@@ -47,15 +47,23 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pays = null;
 
+
     /**
      * @var Collection<int, Facture>
      */
     #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'id_client', orphanRemoval: true)]
     private Collection $factures;
 
+    /**
+     * @var Collection<int, Cart>
+     */
+    #[ORM\OneToOne(targetEntity: Cart::class, mappedBy: 'client', cascade: ['persist', 'remove'])]
+    private ?Cart $cart = null;
+
     public function __construct()
     {
         $this->factures = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,6 +228,37 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($facture->getIdClient() === $this) {
                 $facture->setIdClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCart(): Collection
+    {
+        return $this->cart;
+    }
+
+    public function addCart(?Cart $cart): static
+    {
+        $this->cart = $cart;
+
+        if ($cart && $cart->getClient() !== $this) {
+            $cart->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): static
+    {
+        if ($this->carts->removeElement($cart)) {
+            // set the owning side to null (unless already changed)
+            if ($cart->getClient() === $this) {
+                $cart->setClient(null);
             }
         }
 

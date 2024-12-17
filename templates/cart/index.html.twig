@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InnovShop - Panier{% endblock %}
+
+{% block body %}
+
+    <h1>Votre panier</h1>
+
+    {% if items|length > 0 %}
+        <table>
+            <tr>
+                <th>Article</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.article.title }}</td>
+                    <td>{{ item.price }} €</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price * item.quantity }} €</td>
+                    <td>
+                        <form action="{{ path('app_cart_remove', {'id': item.article.id}) }}" method="POST">
+                            <button type="submit">Retirer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <form action="{{ path('app_cart_clear') }}" method="POST">
+            <button type="submit">Vider le panier</button>
+        </form>
+
+    {% else %}
+        <p>Votre panier est vide.</p>
+    {% endif %}
+
+{% endblock %}

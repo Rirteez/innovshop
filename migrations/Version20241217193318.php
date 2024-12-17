@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241122163436 extends AbstractMigration
+final class Version20241217193318 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20241122163436 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE article CHANGE colors colors JSON DEFAULT NULL COMMENT \'(DC2Type:json)\'');
+        $this->addSql('ALTER TABLE cart DROP INDEX IDX_BA388B719EB6921, ADD UNIQUE INDEX UNIQ_BA388B719EB6921 (client_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE article CHANGE colors colors VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE cart DROP INDEX UNIQ_BA388B719EB6921, ADD INDEX IDX_BA388B719EB6921 (client_id)');
     }
 }
