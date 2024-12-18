@@ -58,7 +58,7 @@ class Article
     private ?bool $flashOrNo = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $colors = [];
+    private ?array $variant = [];
 
     /**
      * @var Collection<int, CartItem>
@@ -67,7 +67,7 @@ class Article
     private Collection $cartItems;
 
 
-    public const COLORS = [
+    public const VARIANTS = [
         'Blanc' => '#ffffff',
         'Bleu' => '#0056ff',
         'Gris' => '#909090',
@@ -256,14 +256,14 @@ class Article
         return $this;
     }
 
-    public function getColors(): ?array
+    public function getVariant(): ?array
     {
-        return $this->colors;
+        return $this->variant;
     }
 
-    public function setColors(?array $colors): static
+    public function setVariant(?array $variant): static
     {
-        $this->colors = $colors;
+        $this->variant = $variant;
         return $this;
     }
 

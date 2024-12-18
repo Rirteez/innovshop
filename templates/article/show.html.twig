@@ -37,26 +37,27 @@
                     <h2 class="mgb-2">{{ article.title }}</h2>
                     <p>{{ article.description | raw }}</p>
                     <div class="separation separation--bottom"></div>
-                    {% if article.colors is not empty %}
+                    {% if article.variant is not empty %}
                         <h4 class="mgy-2">Coloris disponibles</h4>
                         <div class="row colors-range-article">
-                            {% for color in article.colors %}
+                            {% for variant in article.variant %}
                                 <input
                                         form="cart-form"
                                         type="radio"
                                         name="variant"
-                                        id="color-radio-{{ color }}"
-                                        value="{{ color }}"
-                                        class="color-radio {{ color }}"
+                                        id="color-radio-{{ variant }}"
+                                        value="{{ variant }}"
+                                        class="color-radio {{ variant }}"
                                         {% if loop.first %}checked{% endif %}/>
                                 <label
-                                        for="color-radio-{{ color }}"
-                                        class="color-label color-label--{{ color }}" >
-                                    <span class="sr-only">{{ color }}</span>
+                                        for="color-radio-{{ variant }}"
+                                        class="color-label color-label--{{ variant }}" >
+                                    <span class="sr-only">{{ variant }}</span>
                                 </label>
                             {% endfor %}
                         </div>
                     {% else %}
+                        <input form="cart-form" name="variant" type="hidden" value="" />
                         <p>Il n'y a pas d'options disponibles pour cet article.</p>
                     {% endif %}
                 </div>

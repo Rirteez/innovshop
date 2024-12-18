@@ -51,7 +51,8 @@
                         </div>
                         <div class="row prix-panier-article">
                             <p class="prix-article">{{ article.price }} €</p>
-                            <a href="#" class="button button--xsmall button--secondary">Ajouter au panier</a>
+                            <form action="{{ path('app_cart_add', {'id': article.id}) }}" method="POST" id="addCartForm-{{ article.id }}"></form>
+                            <button form="addCartForm-{{ article.id }}" type="submit" class="button button--xsmall button--secondary">Ajouter au panier</button>
                         </div>
 
                     </div>
@@ -84,4 +85,43 @@
             </div>
         </div>
     </div>
+
+
+
+    <script>
+        document.querySelectorAll('form[action*="/panier/add"]').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                console.log("Formulaire soumis", form);
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                const formData = new FormData(form); // Récupère les données du formulaire
+                console.log("Données envoyées :", [...formData.entries()]);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json()) // Transforme la réponse JSON
+                    .then(data => {
+                        console.log("Réponse serveur :", data);
+                        if (data.success) {
+                            alert('Article ajouté au panier !');
+
+                            // Met à jour dynamiquement l'icône panier
+                            const cartIcon = document.querySelector('.cart-count');
+                            if (cartIcon) {
+                                let currentCount = parseInt(cartIcon.textContent) || 0;
+                                cartIcon.textContent = currentCount + 1;
+                            }
+                        } else {
+                            alert('Erreur : ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la requête fetch :', error);
+                        console.log('Statut :', error.message);
+                    });
+            });
+        });
+    </script>
 {% endblock %}

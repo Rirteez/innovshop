@@ -89,7 +89,7 @@ class CartItem
         return $this->variant;
     }
 
-    public function setVariant(string $variant): static
+    public function setVariant(?string $variant): static
     {
         $this->variant = $variant;
 

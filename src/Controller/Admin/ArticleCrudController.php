@@ -41,7 +41,7 @@ class ArticleCrudController extends AbstractCrudController
             NumberField::new('price'),
             TextEditorField::new('description_detail'),
             ChoiceField::new('colors')
-                ->setChoices(array_flip(Article::COLORS))
+                ->setChoices(array_flip(Article::VARIANTS))
                 ->allowMultipleChoices()
                 ->renderExpanded(false),
             ImageField::new('images')

@@ -36,8 +36,6 @@ class CartController extends AbstractController
         $cartItemCount = 0;
 
         if (!$client instanceof Client) {
-            $cart = $cartRepository->findBy(['client' => $client]);
-            $cartItemCount = $cartRepository->getCartItemsCount($cart);
             throw $this->createAccessDeniedException('Vous devez être connecté pour voir votre panier.');
         }
 
@@ -83,7 +81,8 @@ class CartController extends AbstractController
             return new JsonResponse(['error' => 'Article non trouvé.'], 404);
         }
 
-        $variant = $request->get('variant', null);
+        $variant = $request->get('variant');
+        $variant = $variant === '' ? null : $variant;
         $cart = $cartRepository->findOrCreateCart($client);
         $cartRepository->removeItemFromCart($cart, $article, $variant);
 

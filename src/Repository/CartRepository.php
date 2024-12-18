@@ -61,9 +61,11 @@ class CartRepository extends ServiceEntityRepository
     // Supprime un item du panier
     public function removeItemFromCart(Cart $cart, Article $article, ?string $variant) {
         $em = $this->getEntityManager();
-
         foreach ($cart->getCartItems() as $cartItem) {
-            if($cartItem->getArticle()->getId() === $article->getId() && $cartItem->getVariant() === $variant) {
+            if (
+                $cartItem->getArticle()->getId() === $article->getId() &&
+                ($cartItem->getVariant() === $variant || ($cartItem->getVariant() === null && $variant === null))
+            ) {
                 $cart->removeCartItem($cartItem);
                 $em->remove($cartItem);
                 $em->flush();

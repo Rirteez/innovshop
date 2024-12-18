@@ -11,6 +11,7 @@
             <tr>
                 <th>Article</th>
                 <th>Prix</th>
+                <th>Variant</th>
                 <th>Quantité</th>
                 <th>Total</th>
                 <th>Actions</th>
@@ -19,10 +20,13 @@
                 <tr>
                     <td>{{ item.article.title }}</td>
                     <td>{{ item.price }} €</td>
+                    <td>{{ item.variant }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.price * item.quantity }} €</td>
                     <td>
                         <form action="{{ path('app_cart_remove', {'id': item.article.id}) }}" method="POST">
+                            <input name="variant" type="hidden" value="{{ item.variant is defined and item.variant is not empty ? item.variant : '' }}" />
+                            <input name="quantity" type="hidden" value="{{ item.quantity }}" />
                             <button type="submit">Retirer</button>
                         </form>
                     </td>
@@ -31,11 +35,111 @@
         </table>
 
         <form action="{{ path('app_cart_clear') }}" method="POST">
-            <button type="submit">Vider le panier</button>
+            <button class="clearCartbutton" type="submit">Vider le panier</button>
         </form>
 
     {% else %}
         <p>Votre panier est vide.</p>
     {% endif %}
+
+
+
+
+    <script>
+        const removeFromCartForm = document.querySelectorAll('form[action*="/panier/remove"]');
+
+        removeFromCartForm.forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                const formData = new FormData(form); // Récupère les données du formulaire
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json()) // Transforme la réponse JSON
+                    .then(data => {
+                        if (data.success) {
+                            alert('Article supprimé du panier !');
+                            const row = form.closest('tr');
+                            if (row) {
+                                row.remove();
+                            }
+
+                            // Exemple : Met à jour dynamiquement l'icône panier
+                            const cartIcon = document.querySelector('.cart-count'); // Modifie avec ton sélecteur réel
+                            if (cartIcon) {
+                                let currentCount = parseInt(cartIcon.textContent) || 0;
+                                const quantity = parseInt(form.querySelector('input[name="quantity"]')?.value || 1);
+                                cartIcon.textContent = Math.max(currentCount - quantity, 0);
+                            }
+
+                            // Vide le tableau des articles dans le panier
+                            const cartTable = document.querySelector('table');
+                            if (cartTable) {
+                                cartTable.innerHTML = `
+                            <tr>
+                                <td colspan="6">Votre panier est vide.</td>
+                            </tr>
+                        `;
+                            }
+                        } else {
+                            alert('Erreur : ' + data.error);
+                        }
+                    })
+                    .catch(error => console.error('Erreur lors de l\a suppression de l\'article :', error));
+            });
+        });
+
+
+        const clearCartForm = document.querySelector('form[action*="/panier/clear"]');
+
+        if (clearCartForm) {
+            clearCartForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                fetch(clearCartForm.action, {
+                    method: 'POST',
+                })
+                    .then(response => response.json()) // Transforme la réponse JSON
+                    .then(data => {
+                        if (data.success) {
+                            alert('Panier vidé !');
+
+                            // Met à jour dynamiquement l'icône panier
+                            const cartIcon = document.querySelector('.cart-count');
+                            if (cartIcon) {
+                                cartIcon.textContent = '0';
+                            }
+
+                            // Supprime toutes les lignes du tableau d'articles
+                            const cartTableRows = document.querySelectorAll('table tr:not(:first-child)');
+                            cartTableRows.forEach(row => row.remove());
+
+                            // Supprime le bouton viderlepanier
+                            const clearCartButton = document.querySelector('.clearCartbutton');
+                            clearCartButton.remove();
+
+                            // Affiche un message si le panier est vide
+                            const cartContainer = document.querySelector('table');
+                            if (cartContainer) {
+                                cartContainer.insertAdjacentHTML(
+                                    'afterend',
+                                    '<p>Votre panier est vide.</p>'
+                                );
+                                cartContainer.remove();
+                            }
+                        } else {
+                            alert('Erreur : ' + data.error);
+                        }
+                    })
+                    .catch(error => console.error('Erreur lors du vidage du panier :', error));
+            });
+        }
+
+
+
+    </script>
 
 {% endblock %}
