@@ -36,7 +36,7 @@
 
             <div class="lienMenu col-3">
                 <div class="itemMenu itemMenu--user">
-                    <a class="itemMenu" href="/moncompte">
+                    <a class="itemMenu" href="{{ path('client.index') }}">
                         <span class="material-icons">person</span>
                         {% if app.user %}
                             <p>{{ app.user.prenom }} {{ app.user.nom }}</p>
@@ -58,7 +58,7 @@
                     {% endif %}
                 </div>
 
-                <a href="{{ path('app_cart') }}" class="itemMenu">
+                <a href="{{ path('app_cart') }}" class="itemMenu cart">
                     <span class="material-icons">shopping_basket</span>
                     <p>Panier</p>
                     <span id="cart-count" class="cart-count">{{ cartItemCount }}</span>

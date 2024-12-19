@@ -1,135 +1,158 @@
-{% extends 'base.html.twig' %}
+{% extends 'sidebar.html.twig' %}
 
 {% block title %}InnovShop - Panier{% endblock %}
 
-{% block body %}
+{% block client_content %}
 
-    <h1>Votre panier</h1>
+    <div class="cartContainer">
+        <h2 class="mgt-1">Votre panier</h2>
 
-    {% if items|length > 0 %}
-        <table>
-            <tr>
-                <th>Article</th>
-                <th>Prix</th>
-                <th>Variant</th>
-                <th>Quantité</th>
-                <th>Total</th>
-                <th>Actions</th>
-            </tr>
+        {% if items|length > 0 %}
+            {% set totalCart = 0 %}
             {% for item in items %}
-                <tr>
-                    <td>{{ item.article.title }}</td>
-                    <td>{{ item.price }} €</td>
-                    <td>{{ item.variant }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.price * item.quantity }} €</td>
-                    <td>
-                        <form action="{{ path('app_cart_remove', {'id': item.article.id}) }}" method="POST">
-                            <input name="variant" type="hidden" value="{{ item.variant is defined and item.variant is not empty ? item.variant : '' }}" />
-                            <input name="quantity" type="hidden" value="{{ item.quantity }}" />
-                            <button type="submit">Retirer</button>
-                        </form>
-                    </td>
-                </tr>
+                {% set totalCart = totalCart + (item.price * item.quantity) %}
+                <div class="cartItem" data-id="{{ item.article.id }}" data-variant="{{ item.variant }}">
+                    <div class="img-cartItem">
+                        <img src="/images/uploads/{{ item.article.images[0] }}" alt="">
+                    </div>
+
+
+                    <div class="content-cartItem">
+
+                        <div class="title-desc-cartItem">
+                            <div class="title-delete-cartItem">
+                                <h3>{{ item.article.title }}</h3>
+                                <form action="{{ path('app_cart_remove', {'id': item.article.id}) }}" method="POST" class="delete-form">
+                                    <input type="hidden" name="variant" value="{{ item.variant }}">
+                                    <button type="submit" class="fa-regular fa-circle-xmark"></button>
+                                </form>
+
+                            </div>
+
+                            <p class="mgt-1">{{ item.article.description | raw }}</p>
+                            {% if item.variant is not empty %}
+                                <p class="mgt-1">{{ item.variant }}</p>
+                            {% endif %}
+                        </div>
+
+
+                        <div class="priceU-cartItem">
+                            <p class="pu-cartItem">Prix unitaire : {{ item.article.price }}</p>
+                            <div class="price-qtt-cartItem mgt-1">
+                                <div class="qtt-cartItem">
+                                    <a class="fa-solid fa-minus" href="#"></a>
+                                    <p class="mgx-2">{{ item.quantity }}</p>
+                                    <a class="fa-solid fa-plus" href="#"></a>
+                                </div>
+                                <h3>{{ item.price * item.quantity }} €</h3>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="separation separation--thin" data-id="{{ item.article.id }}" data-variant="{{ item.variant }}"></div>
             {% endfor %}
-        </table>
 
-        <form action="{{ path('app_cart_clear') }}" method="POST">
-            <button class="clearCartbutton" type="submit">Vider le panier</button>
-        </form>
+            <div class="accept-deny-cart">
+                <div class="accept-deny-cart">
+                    <form class="acceptFormCart" action="#">
+                        <button class="button button--accept">Valider le panier</button>
+                    </form>
+                    <form class="formDenyCart" action="{{ path('app_cart_clear') }}" method="POST">
+                        <button class="clearCartButton" type="submit">Vider le panier</button>
+                    </form>
+                </div>
 
-    {% else %}
-        <p>Votre panier est vide.</p>
-    {% endif %}
+                <h3 class="totalCart">Montant total du panier : {{ totalCart }} €</h3>
+            </div>
+
+            <div class="separation separation--top"></div>
 
 
-
+        {% else %}
+            <p>Votre panier est vide.</p>
+        {% endif %}
+    </div>
 
     <script>
-        const removeFromCartForm = document.querySelectorAll('form[action*="/panier/remove"]');
-
-        removeFromCartForm.forEach(function (form) {
+        document.querySelectorAll('.delete-form').forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 event.preventDefault(); // Empêche le rechargement de la page
 
-                const formData = new FormData(form); // Récupère les données du formulaire
+                const formData = new FormData(form);
 
                 fetch(form.action, {
                     method: 'POST',
                     body: formData
                 })
-                    .then(response => response.json()) // Transforme la réponse JSON
+                    .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Article supprimé du panier !');
-                            const row = form.closest('tr');
-                            if (row) {
-                                row.remove();
+                            // Supprime l'article du DOM
+                            const cartItem = form.closest('.cartItem');
+                            const itemTotal = parseFloat(cartItem.querySelector('.price-qtt-cartItem h3').textContent);
+                            // Supprime la separation sous l'article
+                            const separation = cartItem.nextElementSibling;
+                            if (separation && separation.classList.contains('separation')) {
+                                separation.remove();
                             }
+                            cartItem.remove();
 
-                            // Exemple : Met à jour dynamiquement l'icône panier
-                            const cartIcon = document.querySelector('.cart-count'); // Modifie avec ton sélecteur réel
+                            // Met à jour le total
+                            const totalCartElement = document.querySelector('.totalCart');
+                            const currentTotal = parseFloat(totalCartElement.textContent.match(/\d+(\.\d+)?/)[0]);
+                            totalCartElement.textContent = `Montant total du panier : ${(currentTotal - itemTotal).toFixed(2)} €`;
+
+                            // Met à jour l'icône du panier
+                            const cartIcon = document.querySelector('.cart-count');
                             if (cartIcon) {
                                 let currentCount = parseInt(cartIcon.textContent) || 0;
-                                const quantity = parseInt(form.querySelector('input[name="quantity"]')?.value || 1);
+                                const quantity = parseInt(cartItem.querySelector('.qtt-cartItem p').textContent) || 1;
                                 cartIcon.textContent = Math.max(currentCount - quantity, 0);
                             }
 
-                            // Vide le tableau des articles dans le panier
-                            const cartTable = document.querySelector('table');
-                            if (cartTable) {
-                                cartTable.innerHTML = `
-                            <tr>
-                                <td colspan="6">Votre panier est vide.</td>
-                            </tr>
-                        `;
+                            // Si le panier est vide, afficher un message
+                            if (!document.querySelector('.cartItem')) {
+                                const cartContainer = document.querySelector('.cartContainer');
+                                cartContainer.innerHTML = '<p>Votre panier est vide.</p>';
                             }
                         } else {
                             alert('Erreur : ' + data.error);
                         }
                     })
-                    .catch(error => console.error('Erreur lors de l\a suppression de l\'article :', error));
+                    .catch(error => console.error('Erreur lors de la suppression de l\'article :', error));
             });
         });
 
+        // Vidage du panier
+        const clearCartButton = document.querySelector('.clearCartButton');
 
-        const clearCartForm = document.querySelector('form[action*="/panier/clear"]');
+        if (clearCartButton) {
+            clearCartButton.addEventListener('click', function (event) {
+                event.preventDefault();
 
-        if (clearCartForm) {
-            clearCartForm.addEventListener('submit', function (event) {
-                event.preventDefault(); // Empêche le rechargement de la page
-
-                fetch(clearCartForm.action, {
-                    method: 'POST',
+                fetch(clearCartButton.closest('form').action, {
+                    method: 'POST'
                 })
-                    .then(response => response.json()) // Transforme la réponse JSON
+                    .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert('Panier vidé !');
+                            // Supprime tous les articles visuellement
+                            document.querySelectorAll('.cartItem').forEach(item => item.remove());
 
-                            // Met à jour dynamiquement l'icône panier
+                            // Met à jour le montant total
+                            const totalCartElement = document.querySelector('.totalCart');
+                            totalCartElement.textContent = 'Montant total du panier : 0 €';
+
+                            // Met à jour le compteur d'articles du panier
                             const cartIcon = document.querySelector('.cart-count');
                             if (cartIcon) {
                                 cartIcon.textContent = '0';
                             }
 
-                            // Supprime toutes les lignes du tableau d'articles
-                            const cartTableRows = document.querySelectorAll('table tr:not(:first-child)');
-                            cartTableRows.forEach(row => row.remove());
-
-                            // Supprime le bouton viderlepanier
-                            const clearCartButton = document.querySelector('.clearCartbutton');
-                            clearCartButton.remove();
-
-                            // Affiche un message si le panier est vide
-                            const cartContainer = document.querySelector('table');
-                            if (cartContainer) {
-                                cartContainer.insertAdjacentHTML(
-                                    'afterend',
-                                    '<p>Votre panier est vide.</p>'
-                                );
-                                cartContainer.remove();
-                            }
+                            // Affiche un message indiquant que le panier est vide
+                            const cartContainer = document.querySelector('.cartContainer');
+                            cartContainer.innerHTML = '<p>Votre panier est vide.</p>';
                         } else {
                             alert('Erreur : ' + data.error);
                         }
@@ -137,9 +160,6 @@
                     .catch(error => console.error('Erreur lors du vidage du panier :', error));
             });
         }
-
-
-
     </script>
 
 {% endblock %}

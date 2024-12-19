@@ -73,7 +73,6 @@ footer {
     color: white;
     background-color: #4d307e;
     text-align: center;
-    margin-top: 6rem;
 
     a {
         font-weight: 200;
@@ -463,6 +462,10 @@ footer {
     width: 75%;
     margin: 6rem auto 6rem auto;
     border-top: #ab9cc5 1px solid;
+
+    &--thin {
+        margin: 2rem auto 2rem auto;
+    }
 
     &--top {
         margin: 2rem auto 6rem auto;
@@ -1019,3 +1022,182 @@ footer {
     flex-direction: column;
     align-items: center;
 }
+/* --------------------------------------------------- */
+/* ---------------------- client --------------------- */
+/* --------------------------------------------------- */
+.client-layout {
+    justify-content: flex-start;
+}
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #f7f4fc;
+    min-height: 100vh;
+    width: 19rem;
+    padding-left: 1rem;
+
+    h1 a {
+        color: #4d307e;
+    }
+
+    .myOrders {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        a {
+            padding-left: 1rem;
+        }
+
+        .second-child-orders {
+            margin-top: 0.5rem;
+        }
+    }
+}
+/* --------------------------------------------------- */
+/* ---------------------- panier --------------------- */
+/* --------------------------------------------------- */
+.cartContainer {
+    max-width: 1440px;
+    margin-inline: auto;
+}
+.cartContainer .cartItem:first-of-type {
+    margin-top: 2rem;
+}
+.cartContainer .cartItem:last-of-type {
+    margin-bottom: 2rem;
+}
+.cart {
+    position: relative;
+}
+.cart-count {
+    display: flex; /* Pour centrer le texte */
+    justify-content: center; /* Centrage horizontal */
+    align-items: center; /* Centrage vertical */
+    background-color: red; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    border-radius: 50%; /* Forme ronde */
+    width: 20px; /* Taille uniforme */
+    height: 20px; /* Taille uniforme */
+    font-size: 13px; /* Taille du texte */
+    font-weight: bold; /* Gras pour mieux voir le texte */
+    position: absolute; /* Si nécessaire pour positionner */
+    top: -5px; /* Ajustez en fonction du placement */
+    right: -10px; /* Ajustez en fonction du placement */
+}
+.cartItem {
+    height: 12rem;
+    display: flex;
+    margin-bottom: 2rem;
+
+    .img-cartItem {
+        height: 100%;
+        width: auto;
+        margin-right: 2rem;
+
+        img {
+            height: 100%;
+            width: auto;
+            border-radius: 1rem;
+        }
+    }
+    .title-delete-cartItem {
+        display: flex;
+        justify-content: space-between;
+
+        a {
+            color: #ab9cc5;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #4d307e;
+            }
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            color: #ab9cc5;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #4d307e;
+            }
+        }
+    }
+
+    .content-cartItem {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+
+        .priceU-cartItem {
+            p {
+                font-size: 0.75rem;
+            }
+        }
+
+        .price-qtt-cartItem {
+            display: flex;
+            justify-content: space-between;
+
+            .qtt-cartItem {
+                display: flex;
+                align-items: center;
+
+                p, a {
+                    font-size: 1.2rem;
+                }
+
+                a {
+                    color: #ab9cc5;
+                    transition: color 0.3s ease;
+
+                    &:hover {
+                        color: #4d307e;
+                    }
+                }
+            }
+        }
+    }
+}
+.img-cartItem img {
+    height: 100%;
+    width: auto;
+}
+.accept-deny-cart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.clearCartButton {
+    background-color: transparent;
+    border: none;
+    color: #cd8d43;
+    text-decoration: underline;
+    margin-left: 1.5rem;
+    cursor: pointer;
+}
+.totalCart {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
