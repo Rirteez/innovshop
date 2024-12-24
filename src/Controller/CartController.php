@@ -13,27 +13,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
-    public function home(CartRepository $cartRepository): Response
-    {
-        $client = $this->getUser();
-        $cartItemCount = 0;
-
-        if ($client instanceof Client) {
-            $cart = $cartRepository->findOrCreateCart($client);
-            $cartItemCount = $cartRepository->getCartItemsCount($cart);
-        }
-
-        return $this->render('base.html.twig', [
-            'cartItemCount' => $cartItemCount,
-        ]);
-    }
-
     #[Route('/panier', name: 'app_cart')]
     public function index(CartRepository $cartRepository): Response
     {
         $client = $this->getUser();
-        $cartItemCount = 0;
 
         if (!$client instanceof Client) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour voir votre panier.');
@@ -44,7 +27,6 @@ class CartController extends AbstractController
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
             'items' => $cart->getCartItems(),
-            'cartItemCount' => $cartItemCount,
         ]);
     }
 
@@ -101,4 +83,43 @@ class CartController extends AbstractController
 
         return new JsonResponse(['success' => 'Panier vidé.']);
     }
+
+    #[Route('/panier/increment/{id}', name: 'app_cart_increment', methods: ['POST'])]
+    public function increment(int $id, Request $request, CartRepository $cartRepository, ArticleRepository $articleRepository): JsonResponse {
+        $client = $this->getUser();
+        if (!$client instanceof Client) {
+            return new JsonResponse(['error' => 'Vous devez être connecté.'], 403);
+        }
+
+        $article = $articleRepository->find($id);
+        if (!$article) {
+            return new JsonResponse(['error' => 'Article non trouvé.'], 404);
+        }
+
+        $variant = $request->get('variant');
+        $cart = $cartRepository->findOrCreateCart($client);
+        $cartRepository->incrementCartItemQuantity($cart, $article, $variant);
+
+        return new JsonResponse(['success' => 'Quantité augmentée.']);
+    }
+
+    #[Route('/panier/decrement/{id}', name: 'app_cart_decrement', methods: ['POST'])]
+    public function decrement(int $id, Request $request, CartRepository $cartRepository, ArticleRepository $articleRepository): JsonResponse {
+        $client = $this->getUser();
+        if (!$client instanceof Client) {
+            return new JsonResponse(['error' => 'Vous devez être connecté.'], 403);
+        }
+
+        $article = $articleRepository->find($id);
+        if (!$article) {
+            return new JsonResponse(['error' => 'Article non trouvé.'], 404);
+        }
+
+        $variant = $request->get('variant');
+        $cart = $cartRepository->findOrCreateCart($client);
+        $cartRepository->decrementCartItemQuantity($cart, $article, $variant);
+
+        return new JsonResponse(['success' => 'Quantité diminuée.']);
+    }
+
 }

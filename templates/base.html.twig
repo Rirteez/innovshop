@@ -61,7 +61,9 @@
                 <a href="{{ path('app_cart') }}" class="itemMenu cart">
                     <span class="material-icons">shopping_basket</span>
                     <p>Panier</p>
-                    <span id="cart-count" class="cart-count">{{ cartItemCount }}</span>
+                    {% if cartItemCount != 0 %}
+                        <span id="cart-count" class="cart-count">{{ cartItemCount }}</span>
+                    {% endif %}
                 </a>
 
             </div>

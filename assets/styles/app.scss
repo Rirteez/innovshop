@@ -1158,6 +1158,12 @@ footer {
                     color: #ab9cc5;
                     transition: color 0.3s ease;
 
+                    &.Adisabled {
+                        pointer-events: none;
+                        color: #c4c4c4;
+                        cursor: not-allowed;
+                    }
+
                     &:hover {
                         color: #4d307e;
                     }
@@ -1166,6 +1172,7 @@ footer {
         }
     }
 }
+
 .img-cartItem img {
     height: 100%;
     width: auto;
