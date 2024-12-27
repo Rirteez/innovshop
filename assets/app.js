@@ -1,3 +1,5 @@
+console.log('app.js chargé');
+
 import './bootstrap.js';
 import './styles/app.scss';
 import 'select2';
@@ -85,15 +87,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialise l'animation
     const scrollingText = document.getElementById('scrollingText');
     scrollText();
-
-
-
-
-
-
-
-
-
-
-
 });
+
+
+
+////////////////////////////////////////// NOTIFICATION AJOUT ARTICLE PANIER ///////////////////////////////////////
+window.showNotification = function (message, type = 'success') {
+    console.log(`showNotification appelée avec message: "${message}" et type: "${type}"`);
+
+    // Crée un élément de notification
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    // Ajoute la notification au conteneur
+    const container = document.getElementById('notification-container');
+    if (!container) {
+        console.error("Le conteneur des notifications (#notification-container) n'existe pas !");
+        return;
+    }
+    container.appendChild(notification);
+
+    // Affiche la notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+
+    // Supprime la notification après 3 secondes
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 500); // Temps pour que la transition de disparition soit terminée
+    }, 5000);
+}

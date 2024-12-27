@@ -754,6 +754,37 @@ footer {
 /* --------------------------------------------------- */
 /* --------------------- article --------------------- */
 /* --------------------------------------------------- */
+#notification-container {
+    position: fixed;
+    top: 96px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    width: 100%;
+    max-width: 500px;
+    pointer-events: none;
+}
+
+.notification {
+    background-color: #eaffee;
+    color: #55b767;
+    border: #acd7b4 1px solid;
+    padding: 10px 20px;
+    border-radius: 0.5rem;
+    margin: 10px auto;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+    transform: translateY(-20px);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .ariane {
     margin-top: 1rem;
     font-size: 0.8rem;
@@ -1099,7 +1130,10 @@ footer {
         img {
             height: 100%;
             width: auto;
+            max-height: 192px;
+            max-width: 192px;
             border-radius: 1rem;
+            object-fit: cover;
         }
     }
     .title-delete-cartItem {
@@ -1111,6 +1145,14 @@ footer {
             cursor: pointer;
             font-size: 1.2em;
             transition: color 0.3s ease;
+
+            h3 {
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: #8552dc;
+                }
+            }
 
             &:hover {
                 color: #4d307e;
@@ -1190,10 +1232,6 @@ footer {
     margin-left: 1.5rem;
     cursor: pointer;
 }
-.totalCart {
-
-}
-
 
 
 

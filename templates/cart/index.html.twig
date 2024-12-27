@@ -3,11 +3,9 @@
 {% block title %}InnovShop - Panier{% endblock %}
 
 {% block client_content %}
-
     <div class="cartContainer">
-        <h2 class="mgt-1">Votre panier</h2>
-
         {% if items|length > 0 %}
+            <h2 class="mgt-1">Votre panier</h2>
             {% set totalCart = 0 %}
             {% for item in items %}
                 {% set totalCart = totalCart + (item.price * item.quantity) %}
@@ -15,27 +13,20 @@
                     <div class="img-cartItem">
                         <img src="/images/uploads/{{ item.article.images[0] }}" alt="">
                     </div>
-
-
                     <div class="content-cartItem">
-
                         <div class="title-desc-cartItem">
                             <div class="title-delete-cartItem">
-                                <h3>{{ item.article.title }}</h3>
+                                <a href="{{ path('article.show', {id: item.article.id, slug: item.article.slug}) }}"><h3>{{ item.article.title }}</h3></a>
                                 <form action="{{ path('app_cart_remove', {'id': item.article.id}) }}" method="POST" class="delete-form">
                                     <input type="hidden" name="variant" value="{{ item.variant }}">
                                     <button type="submit" class="fa-regular fa-circle-xmark"></button>
                                 </form>
-
                             </div>
-
                             <p class="mgt-1">{{ item.article.description | raw }}</p>
                             {% if item.variant is not empty %}
                                 <p class="mgt-1">{{ item.variant }}</p>
                             {% endif %}
                         </div>
-
-
                         <div class="priceU-cartItem">
                             <p class="pu-cartItem">Prix unitaire : {{ item.article.price }}</p>
                             <div class="price-qtt-cartItem mgt-1">
@@ -44,26 +35,23 @@
                                         {% if item.variant is not empty %}
                                             <input type="hidden" name="variant" value="{{ item.variant }}">
                                         {% endif %}
-                                        <button type="submit" class="fa-solid fa-minus" {% if item.quantity == 1 %}disabled{% endif %}></button>
+                                        <button class="btn-decrement" type="submit" {% if item.quantity == 1 %}disabled{% endif %}>-</button>
                                     </form>
                                     <p class="cartItemQuantity mgx-2">{{ item.quantity }}</p>
                                     <form action="{{ path('app_cart_increment', {'id': item.article.id}) }}" method="post">
                                         {% if item.variant is not empty %}
                                             <input type="hidden" name="variant" value="{{ item.variant }}">
                                         {% endif %}
-                                        <button type="submit" class="fa-solid fa-plus"></button>
+                                        <button type="submit">+</button>
                                     </form>
-
                                 </div>
                                 <h3>{{ item.price * item.quantity }} €</h3>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="separation separation--thin" data-id="{{ item.article.id }}" data-variant="{{ item.variant }}"></div>
             {% endfor %}
-
             <div class="accept-deny-cart">
                 <div class="accept-deny-cart">
                     <form class="acceptFormCart" action="#">
@@ -76,64 +64,82 @@
 
                 <h3 class="totalCart">Montant total du panier : {{ totalCart }} €</h3>
             </div>
-
             <div class="separation separation--top"></div>
-
-
         {% else %}
-            <p>Votre panier est vide.</p>
+            <p class="mgt-2">Votre panier est vide.</p>
         {% endif %}
     </div>
 
-    <script>
-        // Gestion des formulaires d'incrémentation et de décrémentation
-        document.querySelectorAll('form[action*="/panier/increment"], form[action*="/panier/decrement"]').forEach(form => {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault(); // Empêche le rechargement de la page
 
-                const formData = new FormData(form); // Récupère les données du formulaire
+    <script>
+        document.querySelectorAll('.qtt-cartItem form').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                console.log('Form submitted:', form.action);
+
+                const isIncrement = form.action.includes('/increment');
+                const formData = new FormData(form);
 
                 fetch(form.action, {
                     method: 'POST',
                     body: formData
                 })
-                    .then(response => response.json()) // Transforme la réponse JSON
+                    .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // Mettre à jour la quantité de l'article
-                            const quantityElement = form.closest('.qtt-cartItem').querySelector('.cartItemQuantity');
-                            if (quantityElement) {
-                                let currentQuantity = parseInt(quantityElement.textContent) || 0;
-                                const isIncrement = form.action.includes('/increment');
-                                quantityElement.textContent = isIncrement ? currentQuantity + 1 : currentQuantity - 1;
+                            // Recupere l'item correspondant
+                            const cartItem = form.closest('.cartItem');
+                            // Quantité de l'item
+                            const quantityElement = cartItem.querySelector('.cartItemQuantity');
+                            // Prix total de l'item, prix * quantité
+                            const priceElement = cartItem.querySelector('.price-qtt-cartItem h3');
+                            // Prix unitaire de l'item
+                            const unitPrice = parseFloat(cartItem.querySelector('.pu-cartItem').textContent.replace('Prix unitaire : ', '').replace('€', '').trim());
 
 
-                                // Mettre à jour dynamiquement l'icône panier
-                                const cartIcon = document.querySelector('.cart-count'); // Modifie avec ton sélecteur réel
-                                if (cartIcon) {
-                                    let currentCount = parseInt(cartIcon.textContent) || 0;
-                                    cartIcon.textContent = isIncrement ? currentCount + 1 : Math.max(currentCount - 1, 0);
-                                }
-                            }
+                            let currentQuantity = parseInt(quantityElement.textContent) || 0;
 
-                            // Mettre à jour le montant total
-                            const priceElement = form.closest('.cartItem').querySelector('.price-qtt-cartItem h3');
-                            const unitPrice = parseFloat(form.closest('.cartItem').querySelector('.pu-cartItem').textContent.replace('Prix unitaire : ', '').replace('€', '').trim());
+                            // Ajuster la quantité visuellement
+                            currentQuantity = isIncrement ? currentQuantity + 1 : currentQuantity - 1;
+                            quantityElement.textContent = currentQuantity;
+
+                            // Mettre à jour le total pour cet article
                             if (priceElement && unitPrice) {
-                                const newQuantity = isIncrement ? currentQuantity + 1 : currentQuantity - 1;
-                                priceElement.textContent = (unitPrice * newQuantity).toFixed(2) + ' €';
+                                priceElement.textContent = (unitPrice * currentQuantity).toFixed(2) + ' €';
                             }
 
+                            // Mettre à jour dynamiquement le montant total du panier
+                            const totalCartElement = document.querySelector('.totalCart');
+                            if (totalCartElement) {
+                                let totalCart = parseFloat(totalCartElement.textContent.match(/\d+(\.\d+)?/)[0]);
+                                totalCart = isIncrement ? totalCart + unitPrice : totalCart - unitPrice;
+                                totalCartElement.textContent = `Montant total du panier : ${totalCart.toFixed(2)} €`;
+                            }
 
+                            // Mettre à jour dynamiquement le compteur d'articles dans le panier
+                            const cartIcon = document.querySelector('.cart-count');
+                            if (cartIcon) {
+                                let currentCount = parseInt(cartIcon.textContent) || 0;
+                                cartIcon.textContent = isIncrement ? currentCount + 1 : Math.max(currentCount - 1, 0);
+                            }
+
+                            // Bouton -
+                            const decrementButton = cartItem.querySelector('.btn-decrement');
+
+                            if (currentQuantity <= 1) {
+                                decrementButton.disabled = true;
+                            } else {
+                                decrementButton.disabled = false;
+                            }
                         } else {
                             alert('Erreur : ' + data.error);
                         }
                     })
-                    .catch(error => console.error('Erreur lors de la mise à jour du panier :', error));
+                    .catch(error => {
+                        console.error('Erreur lors de la mise à jour du panier :', error);
+                    });
             });
         });
-
-
         document.querySelectorAll('.delete-form').forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 event.preventDefault(); // Empêche le rechargement de la page
@@ -147,6 +153,8 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
+                            console.log('Réponse du serveur :', data);
+
                             // Supprime l'article du DOM
                             const cartItem = form.closest('.cartItem');
                             const itemTotal = parseFloat(cartItem.querySelector('.price-qtt-cartItem h3').textContent);
@@ -168,12 +176,6 @@
                                 let currentCount = parseInt(cartIcon.textContent) || 0;
                                 const quantity = parseInt(cartItem.querySelector('.qtt-cartItem p').textContent) || 1;
                                 cartIcon.textContent = Math.max(currentCount - quantity, 0);
-                            }
-
-                            // Si le panier est vide, afficher un message
-                            if (!document.querySelector('.cartItem')) {
-                                const cartContainer = document.querySelector('.cartContainer');
-                                cartContainer.innerHTML = '<p>Votre panier est vide.</p>';
                             }
                         } else {
                             alert('Erreur : ' + data.error);
@@ -208,10 +210,6 @@
                             if (cartIcon) {
                                 cartIcon.textContent = '0';
                             }
-
-                            // Affiche un message indiquant que le panier est vide
-                            const cartContainer = document.querySelector('.cartContainer');
-                            cartContainer.innerHTML = '<p>Votre panier est vide.</p>';
                         } else {
                             alert('Erreur : ' + data.error);
                         }
@@ -220,5 +218,4 @@
             });
         }
     </script>
-
 {% endblock %}

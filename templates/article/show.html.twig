@@ -4,6 +4,10 @@
 
 {% block body %}
     <div class="container">
+        <!-- Notification ajout article au panier -->
+        <div id="notification-container"></div>
+
+
         <div class="ariane">
             <a href="/"><i class="fa-solid fa-house"></i></a>
             <i class="fa-solid fa-chevron-right"></i>
@@ -120,7 +124,7 @@
                     .then(data => {
                         if (data.success) {
                             // Affiche une notification
-                            alert('Article ajouté au panier !');
+                            showNotification('Article ajouté au panier avec succès!');
 
                             // Exemple : Met à jour dynamiquement l'icône panier
                             const cartIcon = document.querySelector('.cart-count'); // Modifie avec ton sélecteur réel
@@ -129,12 +133,13 @@
                                 cartIcon.textContent = currentCount + parseInt(formData.get('quantity'));
                             }
                         } else {
-                            alert('Erreur : ' + data.error);
+                            showNotification('Erreur : ' + data.error, 'error');
                         }
                     })
-                    .catch(error => console.error('Erreur lors de l\'ajout au panier :', error));
+                    .catch(error => {
+                        showNotification('Une erreur est survenue.', 'error');
+                    });
             });
         }
     </script>
-
 {% endblock %}

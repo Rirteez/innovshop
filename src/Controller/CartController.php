@@ -97,6 +97,8 @@ class CartController extends AbstractController
         }
 
         $variant = $request->get('variant');
+        $variant = $variant === '' ? null : $variant;
+
         $cart = $cartRepository->findOrCreateCart($client);
         $cartRepository->incrementCartItemQuantity($cart, $article, $variant);
 
@@ -116,6 +118,8 @@ class CartController extends AbstractController
         }
 
         $variant = $request->get('variant');
+        $variant = $variant === '' ? null : $variant;
+
         $cart = $cartRepository->findOrCreateCart($client);
         $cartRepository->decrementCartItemQuantity($cart, $article, $variant);
 

@@ -78,7 +78,8 @@ class CartRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
 
         foreach ($cart->getCartItems() as $cartItem) {
-            if ($cartItem->getArticle()->getId() === $article->getId() && ($cartItem->getVariant() === $variant || (is_null($cartItem->getVariant()) && is_null($variant)))) {
+            $cartVariant = $cartItem->getVariant() === '' ? null : $cartItem->getVariant();
+            if ($cartItem->getArticle()->getId() === $article->getId() && ($cartVariant === $variant)) {
                 // Si l'article existe déjà, on incrémente la quantité
                 $cartItem->setQuantity($cartItem->getQuantity() + 1);
                 $em->persist($cartItem);
@@ -92,16 +93,12 @@ class CartRepository extends ServiceEntityRepository
         $em = $this->getEntityManager();
 
         foreach ($cart->getCartItems() as $cartItem) {
-            if (
-                $cartItem->getArticle()->getId() === $article->getId() &&
-                ($cartItem->getVariant() === $variant || (is_null($cartItem->getVariant()) && is_null($variant)))
-            ) {
-                // Si la quantité est supérieure à 1, on décrémente
+            $cartVariant = $cartItem->getVariant() === '' ? null : $cartItem->getVariant();
+            if ($cartItem->getArticle()->getId() === $article->getId() && ($cartVariant === $variant)) {
                 if ($cartItem->getQuantity() > 1) {
                     $cartItem->setQuantity($cartItem->getQuantity() - 1);
                     $em->persist($cartItem);
                 } else {
-                    // Si la quantité atteint 0, on supprime l'article du panier
                     $cart->removeCartItem($cartItem);
                     $em->remove($cartItem);
                 }

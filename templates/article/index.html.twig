@@ -4,6 +4,8 @@
 
 {% block body %}
     <div class="container">
+        <!-- Notification ajout article au panier -->
+        <div id="notification-container"></div>
         <div class="mgy-4">
             <h2 class="mgy-2">Notre catalogue</h2>
 
@@ -105,7 +107,7 @@
                     .then(data => {
                         console.log("Réponse serveur :", data);
                         if (data.success) {
-                            alert('Article ajouté au panier !');
+                            showNotification('Article ajouté au panier avec succès!');
 
                             // Met à jour dynamiquement l'icône panier
                             const cartIcon = document.querySelector('.cart-count');
@@ -114,12 +116,11 @@
                                 cartIcon.textContent = currentCount + 1;
                             }
                         } else {
-                            alert('Erreur : ' + data.error);
+                            showNotification('Erreur: ' + data.error, 'error');
                         }
                     })
                     .catch(error => {
-                        console.error('Erreur lors de la requête fetch :', error);
-                        console.log('Statut :', error.message);
+                        showNotification('Une erreur est survenue.', 'error');
                     });
             });
         });
