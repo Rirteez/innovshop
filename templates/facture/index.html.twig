@@ -1,0 +1,28 @@
+{% extends 'sidebar.html.twig' %}
+{% set locale = 'fr' %}
+{% block title %}InnovShop - Mes commandes{% endblock %}
+
+{% block client_content %}
+    <div class="orders-container">
+        <h2 class="mgy-1">Mes commandes en cours</h2>
+        {% if orders|length > 0 %}
+            {% for order in orders %}
+                <div class="item-orders mgb-1">
+                    <p>
+                        Commande n° {{ '%06d'|format(order.id) }} -
+                        {{ order.dateFacture|date('d/m/Y') }} -
+                        {{ order.getItemCount() }} articles - Total : {{ order.total|number_format(2, ',', ' ') }} €
+                    </p>
+                    <div style="display:flex;justify-content: space-between; align-items: center;gap:1rem;">
+                        <p class="{% if (order.statut.value) == 'En cours' %}statutOrange{% else %}statutGreen{% endif %}">{{ order.statut.value }}</p>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Vous n'avez aucune commande en cours.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

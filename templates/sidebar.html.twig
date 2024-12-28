@@ -6,8 +6,8 @@
             <h1 class="mgt-1"><a href="{{ path('client.index') }}">Mes infos personnelles</a></h1>
             <div class="myOrders mgt-2">
                 <h1>Mes commandes</h1>
-                <a class="mgt-1" href="#">Commandes en cours</a>
-                <a class="second-child-orders" href="#">Commandes passées</a>
+                <a class="mgt-1" href="{{ path('app_facture') }}">Commandes en cours</a>
+                <a class="second-child-orders" href="{{ path('app_facture_past') }}">Commandes passées</a>
             </div>
         </aside>
 

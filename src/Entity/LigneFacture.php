@@ -25,6 +25,15 @@ class LigneFacture
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $total_ligne = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $unit_price = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $variant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +71,42 @@ class LigneFacture
     public function setTotalLigne(string $total_ligne): static
     {
         $this->total_ligne = $total_ligne;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getUnitPrice(): ?string
+    {
+        return $this->unit_price;
+    }
+
+    public function setUnitPrice(string $unit_price): static
+    {
+        $this->unit_price = $unit_price;
+
+        return $this;
+    }
+
+    public function getVariant(): ?string
+    {
+        return $this->variant;
+    }
+
+    public function setVariant(?string $variant): static
+    {
+        $this->variant = $variant;
 
         return $this;
     }

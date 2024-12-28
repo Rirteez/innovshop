@@ -1232,8 +1232,37 @@ footer {
     margin-left: 1.5rem;
     cursor: pointer;
 }
+/* --------------------------------------------------- */
+/* -------------------- commandes -------------------- */
+/* --------------------------------------------------- */
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 
+    box-sizing: border-box;
+    width: calc(100% - 24rem);
+    padding: 0 20rem 0 2rem;
 
+    .item-orders {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        background-color: #f7f4fc;
+        border: #ab9cc5 1px solid;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem 0.5rem 1rem;
+
+        .statutGreen {
+            color: #55b767;
+        }
+        .statutOrange {
+            color: #cd8d43;
+        }
+    }
+}
 
 
 

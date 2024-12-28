@@ -54,7 +54,7 @@
             {% endfor %}
             <div class="accept-deny-cart">
                 <div class="accept-deny-cart">
-                    <form class="acceptFormCart" action="#">
+                    <form class="acceptFormCart" action="{{ path('app_facture_create') }}">
                         <button class="button button--accept">Valider le panier</button>
                     </form>
                     <form class="formDenyCart" action="{{ path('app_cart_clear') }}" method="POST">

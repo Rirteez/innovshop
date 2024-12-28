@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
 class Facture
@@ -21,6 +22,7 @@ class Facture
     private ?\DateTimeImmutable $date_facture = null;
 
     #[ORM\Column(enumType: StatusEnum::class)]
+    #[Assert\NotNull(message: 'Le statut ne peut pas être nul.')]
     private ?StatusEnum $statut = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -63,7 +65,7 @@ class Facture
         return $this->statut;
     }
 
-    public function setStatut(StatusEnum $statut): static
+    public function setStatut(StatusEnum $statut): self
     {
         $this->statut = $statut;
 
@@ -122,5 +124,16 @@ class Facture
         $this->id_client = $id_client;
 
         return $this;
+    }
+
+    public function getItemCount(): int
+    {
+        $count = 0;
+
+        foreach ($this->ligneFactures as $ligne) {
+            $count += $ligne->getQuantity();
+        }
+
+        return $count;
     }
 }
