@@ -9,8 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Facture
 {
     #[ORM\Id]
@@ -37,6 +39,9 @@ class Facture
     #[ORM\ManyToOne(inversedBy: 'factures')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $id_client = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updated_at = null;
 
     public function __construct()
     {
@@ -136,4 +141,25 @@ class Facture
 
         return $count;
     }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function updateTimestamp(PreUpdateEventArgs $event): void
+    {
+        if ($event->hasChangedField('statut')) {
+            $this->updated_at = new \DateTimeImmutable();
+        }
+    }
 }
+

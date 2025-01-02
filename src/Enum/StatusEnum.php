@@ -8,7 +8,7 @@
         case TERMINEE = 'Terminée';
         case ANNULEE = 'Annulée';
 
-        // Méthode pour obtenir les libellés lisibles pour l'interface utilisateur
+
         public function getLabel(): string
         {
             return match ($this) {
@@ -19,15 +19,29 @@
             };
         }
 
-        // Méthode statique pour récupérer toutes les valeurs pour les formulaires ou les choix
+
         public static function getChoices(): array
         {
             return [
-                'En cours' => self::EN_COURS->value,
-                'Expediée' => self::EXPEDIEE->value,
-                'Terminée' => self::TERMINEE->value,
-                'Annulée' => self::ANNULEE->value,
+                'En cours' => self::EN_COURS,
+                'Expédiée' => self::EXPEDIEE,
+                'Terminée' => self::TERMINEE,
+                'Annulée' => self::ANNULEE,
             ];
+        }
+
+        public static function casesToArray(): array
+        {
+            $cases = [];
+            foreach (self::cases() as $case) {
+                $cases[$case->value] = $case->value;
+            }
+            return $cases;
+        }
+
+        public function toString(): string
+        {
+            return $this->value;
         }
     }
 ?>

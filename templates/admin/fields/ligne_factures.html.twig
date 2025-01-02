@@ -1,0 +1,10 @@
+{% if field.value is not empty %}
+    {% for ligne in field.value %}
+        <div>
+            <strong>{{ ligne.idArticle.title }}</strong>
+            (x{{ ligne.quantity }}) - {{ ligne.totalLigne|number_format(2, ',', ' ') }} €
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucun article dans cette commande.</p>
+{% endif %}

@@ -25,7 +25,7 @@ class FactureController extends AbstractController
 
         setlocale(LC_TIME, 'fr_FR.UTF-8');
         $orders = $entityManager->getRepository(Facture::class)
-            ->findBy(['id_client' => $client->getId(), 'statut' => StatusEnum::EN_COURS], ['date_facture' => 'DESC']);
+            ->findBy(['id_client' => $client->getId(), 'statut' => [StatusEnum::EN_COURS, StatusEnum::EXPEDIEE]], ['date_facture' => 'DESC']);
 
         return $this->render('facture/index.html.twig', [
             'orders' => $orders,
@@ -42,7 +42,7 @@ class FactureController extends AbstractController
         }
 
         $orders = $entityManager->getRepository(Facture::class)
-            ->findBy(['id_client' => $client->getId(), 'statut' => 'terminée'], ['date_facture' => 'DESC']);
+            ->findBy(['id_client' => $client->getId(), 'statut' => [StatusEnum::TERMINEE, StatusEnum::ANNULEE]], ['date_facture' => 'DESC']);
 
         return $this->render('facture/pastorders.html.twig', [
             'orders' => $orders,

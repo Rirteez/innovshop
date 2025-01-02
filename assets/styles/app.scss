@@ -1235,6 +1235,24 @@ footer {
 /* --------------------------------------------------- */
 /* -------------------- commandes -------------------- */
 /* --------------------------------------------------- */
+.container-item-orders {
+    max-height: 2.5rem;
+    overflow: hidden;
+    margin-top: 1rem;
+    background-color: #f7f4fc;
+    border: #ab9cc5 1px solid;
+    border-radius: 0.5rem;
+
+    .hidden-content-item-order {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    &:first-of-type {
+        margin-top: 0;
+    }
+}
 .orders-container {
     display: flex;
     flex-direction: column;
@@ -1242,18 +1260,18 @@ footer {
 
     box-sizing: border-box;
     width: calc(100% - 24rem);
-    padding: 0 20rem 0 2rem;
+    padding: 0 2rem 0 2rem;
 
     .item-orders {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
-
-        background-color: #f7f4fc;
-        border: #ab9cc5 1px solid;
-        border-radius: 0.5rem;
+        height: 2.5rem;
+        color: black;
         padding: 0.5rem 1rem 0.5rem 1rem;
+        cursor: pointer;
+        box-sizing: border-box;
 
         .statutGreen {
             color: #55b767;
@@ -1261,10 +1279,52 @@ footer {
         .statutOrange {
             color: #cd8d43;
         }
+        .statutRouge {
+            color: #FF0000;
+        }
+
     }
 }
+/* --------------------------------------------------- */
+/* --------------- lignes de commandes --------------- */
+/* --------------------------------------------------- */
+.ligne-facture {
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
 
+    &:last-of-type {
+        margin-bottom: 1rem;
+    }
 
+    .content-ligne-facture {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+
+        a {
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        em {
+            font-style: normal;
+            font-weight: 800;
+        }
+
+        span {
+            margin-right: 3rem;
+        }
+    }
+
+    .img-ligne-facture {
+        width: 3rem;
+        height: 3rem;
+        object-fit: cover;
+        border-radius: 0.3rem;
+        margin-right: 1rem;
+    }
+}
 
 
 

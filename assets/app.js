@@ -1,3 +1,5 @@
+import {forEach} from "core-js/stable/dom-collections";
+
 console.log('app.js chargé');
 
 import './bootstrap.js';

@@ -7,22 +7,80 @@
         <h2 class="mgy-1">Mes commandes en cours</h2>
         {% if orders|length > 0 %}
             {% for order in orders %}
-                <div class="item-orders mgb-1">
-                    <p>
-                        Commande n° {{ '%06d'|format(order.id) }} -
-                        {{ order.dateFacture|date('d/m/Y') }} -
-                        {{ order.getItemCount() }} articles - Total : {{ order.total|number_format(2, ',', ' ') }} €
-                    </p>
-                    <div style="display:flex;justify-content: space-between; align-items: center;gap:1rem;">
-                        <p class="{% if (order.statut.value) == 'En cours' %}statutOrange{% else %}statutGreen{% endif %}">{{ order.statut.value }}</p>
-                        <i class="fa-solid fa-chevron-down"></i>
+                <div class="container-item-orders">
+                    <a class="item-orders">
+                        <p>
+                            Commande n° {{ '%06d'|format(order.id) }} -
+                            {{ order.dateFacture|date('d/m/Y') }} -
+                            {{ order.getItemCount() }} articles - Total : {{ order.total|number_format(2, ',', ' ') }} €
+                        </p>
+                        <div style="display:flex;justify-content: space-between; align-items: center;gap:1rem;">
+                            <p class="{% if (order.statut.value) == 'En cours' %}statutOrange{% else %}statutGreen{% endif %}">
+                                {{ order.statut.value }}
+                                {% if order.statut.value == 'Expediée' %}
+                                    le {{ order.updatedAt|date('d/m/Y') }}
+                                {% endif %}
+                            </p>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </a>
+                    <div class="hidden-content-item-order">
+                        {% for ligneFacture in order.ligneFactures %}
+                            <div class="ligne-facture mgt-1">
+                                <img class="img-ligne-facture" src="/images/uploads/{{ ligneFacture.idArticle.images[0] }}" alt="{{ ligneFacture.idArticle.title }}">
+                                <div class="content-ligne-facture">
+                                    <p class="article-quantity">
+                                        <span>{{ ligneFacture.idArticle.title }}</span>
+                                        {% if ligneFacture.quantity > 1 %}
+                                            <em>x {{ ligneFacture.quantity }}</em> = {{ ligneFacture.totalLigne|number_format(2, ',', ' ') }} €
+                                        {% else %}
+                                            = {{ ligneFacture.totalLigne|number_format(2, ',', ' ') }} €
+                                        {% endif %}
+                                    </p>
+                                    <a href="{{ path('article.show', { id: ligneFacture.idArticle.id, slug: ligneFacture.idArticle.slug }) }}" class="article-link">
+                                        Voir la page du produit
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-
                 </div>
+
             {% endfor %}
         {% else %}
             <p>Vous n'avez aucune commande en cours.</p>
         {% endif %}
     </div>
 
+    <script>
+        ////////////////////////////////////////// Ouverture/fermeture des commandes ///////////////////////////////////////
+        document.querySelectorAll('.item-orders').forEach(function (order) {
+            order.addEventListener('click', function () {
+                const container = order.parentElement; // Trouve le conteneur parent
+                const hiddenContent = container.querySelector('.hidden-content-item-order');
+                const chevron = container.querySelector('.fa-solid');
+
+                // Si le contenu est visible, on le cache
+                if (hiddenContent.style.maxHeight && hiddenContent.style.maxHeight !== '0px') {
+                    // Fermer l'élément avec une animation fluide
+                    hiddenContent.style.maxHeight = hiddenContent.scrollHeight + 'px'; // Fixe la hauteur actuelle pour la transition
+                    requestAnimationFrame(() => {
+                        hiddenContent.style.maxHeight = '0';
+                    });
+
+                    // Changement du chevron
+                    chevron.classList.remove('fa-chevron-up');
+                    chevron.classList.add('fa-chevron-down');
+                } else {
+                    // Ouvrir l'élément avec une animation fluide
+                    hiddenContent.style.maxHeight = hiddenContent.scrollHeight + 'px';
+                    container.style.maxHeight = hiddenContent.scrollHeight + 40 + 'px';
+
+                    // Changement du chevron
+                    chevron.classList.remove('fa-chevron-down');
+                    chevron.classList.add('fa-chevron-up');
+                }
+            });
+        });
+    </script>
 {% endblock %}
