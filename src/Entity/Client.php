@@ -6,6 +6,7 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -27,7 +28,9 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $mail = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $password = null;
+    #[Assert\NotBlank(message: 'Le mot de passe est obligatoire.', groups: ['registration'])]
+    #[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins 6 caractères.', groups: ['registration'])]
+    private ?string $password = '';
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];

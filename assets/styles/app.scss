@@ -49,6 +49,9 @@ body {
     margin: 0;
     height: 100%;
 }
+main {
+    min-height: 100vh;
+}
 input, select {
     font-family: "Noto Sans", sans-serif;
     height: 2.3em;
@@ -1325,8 +1328,18 @@ footer {
         margin-right: 1rem;
     }
 }
+/* --------------------------------------------------- */
+/* ---------------- Données du client ---------------- */
+/* --------------------------------------------------- */
+.account-container {
+    display: flex;
+    flex-direction: column;
 
-
+    .input-adresse {
+        width: 100%;
+        padding-left: 0.5rem;
+    }
+}
 
 
 

@@ -57,17 +57,20 @@ class RegisterType extends AbstractType
                         'class' => 'mgt-1 input-login-register',
                     ],
                 ],
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Créer mon compte',
-                'attr' => ['class' => 'button button--primary mgt-2'],
             ]);
+            if ($options['add_submit']) {
+                $builder->add('submit', SubmitType::class, [
+                    'label' => 'Créer mon compte',
+                    'attr' => ['class' => 'button button--primary mgt-2'],
+                ]);
+            }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Client::class,
+            'add_submit' => true,
         ]);
     }
 }

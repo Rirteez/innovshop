@@ -35,9 +35,14 @@
                                                 <p style="margin:0;">{{ article.price }} €</p>
                                                 <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">Voir la page du produit</a>
                                             </div>
-                                            <a class="button button--primary" href="#">
-                                                Ajouter au panier
-                                            </a>
+                                            <form action="{{ path('app_cart_add', {'id': article.id}) }}" method="POST" id="cart-form">
+                                                {% if article.variant is not empty %}
+                                                    <input type="hidden" name="variant" value="{{ article.variant|first }}">
+                                                {% else %}
+                                                    <input type="hidden" name="variant" value="" />
+                                                {% endif %}
+                                                <button type="submit" class="button button--primary btn-panier">Ajouter au panier</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -84,9 +89,9 @@
                                                 <p style="margin:0;">{{ article.price }} €</p>
                                                 <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">Voir la page du produit</a>
                                             </div>
-                                            <a class="button button--primary btn-panier" href="#">
-                                                Ajouter au panier
-                                            </a>
+                                            <form action="{{ path('app_cart_add', {'id': article.id}) }}" method="POST" id="cart-form">
+                                                <button type="submit" class="button button--primary btn-panier">Ajouter au panier</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
