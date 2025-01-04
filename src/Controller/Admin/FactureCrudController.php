@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Facture;
 use App\Enum\StatusEnum;
+use App\Service\MailerService;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -16,6 +18,38 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 
 class FactureCrudController extends AbstractCrudController
 {
+    private MailerService $mailerService;
+
+    public function __construct(MailerService $mailerService)
+    {
+        $this->mailerService = $mailerService;
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if ($entityInstance instanceof Facture) {
+            // Vérifier le changement de statut
+            $originalStatus = $entityManager
+                ->getUnitOfWork()
+                ->getOriginalEntityData($entityInstance)['statut'] ?? null;
+
+            if ($originalStatus !== $entityInstance->getStatut()) {
+                // Envoi de l'email
+                $this->mailerService->sendOrderStatusUpdate(
+                    $entityInstance->getIdClient()->getMail(),
+                    'Mise à jour de votre commande',
+                    'mails/order_status_update.html.twig',
+                    [
+                        'client' => $entityInstance->getIdClient(),
+                        'order' => $entityInstance,
+                    ]
+                );
+            }
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
+    }
+
     public static function getEntityFqcn(): string
     {
         return Facture::class;

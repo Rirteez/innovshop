@@ -97,4 +97,41 @@ class FactureController extends AbstractController
         $this->addFlash('success', 'Votre commande a été validée.');
         return $this->redirectToRoute('app_facture');
     }
+
+    #[Route('/admin/order/update/{id}', name: 'admin.order.update', methods: ['POST'])]
+    public function updateOrderStatus(
+        Facture $facture,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        MailerService $mailerService
+    ): Response {
+        // Récupérer le nouveau statut envoyé par le formulaire
+        $newStatus = $request->request->get('status');
+        if (!$newStatus) {
+            $this->addFlash('danger', 'Statut invalide.');
+            return $this->redirectToRoute('admin');
+        }
+
+        // Mettre à jour le statut de la commande
+        $facture->setStatut($newStatus);
+        $entityManager->flush();
+
+        // Préparer et envoyer l'email
+        $client = $facture->getIdClient();
+        if ($client) {
+            $mailerService->sendOrderStatusUpdate(
+                $client->getMail(),
+                'Mise à jour de votre commande',
+                'mails/order_status_update.html.twig',
+                [
+                    'client' => $client,
+                    'order' => $facture,
+                ]
+            );
+        }
+
+        // Retourner une confirmation
+        $this->addFlash('success', 'Statut de la commande mis à jour et email envoyé.');
+        return $this->redirectToRoute('admin');
+    }
 }
