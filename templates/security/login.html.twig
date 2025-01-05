@@ -4,7 +4,6 @@
     <div class="container mgt-1">
         <div class="form-login-register">
             <h1 class="mgy-1">Connectez vous</h1>
-
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}

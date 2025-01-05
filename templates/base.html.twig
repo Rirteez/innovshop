@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <title>{% block title %}InnovShop{% endblock %}</title>
         <link rel="icon" href="/images/logo.png">
         {% block stylesheets %}
@@ -21,15 +21,13 @@
 
     <header>
         <div class="menu pdgx-4">
-            <div class="nameSite col-3">
+            <button class="burger-menu" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nameSite col-3" style="width: 100%;">
                 <h1>
                     <a href="{{ path('index') }}">InnovShop</a>
                 </h1>
-            </div>
-            <div class="col-3">
-                <form action="POST">
-                    <input class="search" type="text" name="search" placeholder="Rechercher un article..." />
-                </form>
             </div>
 
             <div class="lienMenu col-3">
@@ -44,11 +42,6 @@
                     </a>
                     {% if app.user %}
                         <div class="hover-user">
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <div class="dashboard">
-                                    <a class="button button--primary" href="{{ path('admin') }}">Dashboard</a>
-                                </div>
-                            {% endif %}
                             <div class="log-out mgt-1">
                                 <a class="button button--deny button--small" href="{{ path('app_logout') }}">Se déconnecter</a>
                             </div>
@@ -63,12 +56,33 @@
                         <span id="cart-count" class="cart-count">{{ cartItemCount }}</span>
                     {% endif %}
                 </a>
-
             </div>
         </div>
-        <div class="navbar pdgx-2" style="background: linear-gradient(to right, #4d307e 15%, #EEE9F6 15%)">
+
+        <div class="navbar pdgx-2">
             <nav>
                 <ul class="row navbar-list">
+                    <li class="burger-lienMenu">
+                        <div class="itemMenu itemMenu--user">
+                            <a class="itemMenu" href="{{ path('client.index') }}">
+                                <span class="material-icons">person</span>
+                            </a>
+                            {% if app.user %}
+                                <div class="hover-user">
+                                    <div class="log-out mgt-1">
+                                        <a class="button button--deny button--small" href="{{ path('app_logout') }}" style="color:#cd8d43;">Se déconnecter</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <a href="{{ path('app_cart') }}" class="itemMenu cart">
+                            <span class="material-icons">shopping_basket</span>
+                            {% if cartItemCount != 0 %}
+                                <span id="cart-count" class="cart-count" style="color: white;">{{ cartItemCount }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
                     <div class="row">
                         {% for category in categories %}
                             <li class="pdx-1 nav-item color-{{ loop.index }}">
@@ -84,7 +98,6 @@
                 </ul>
             </nav>
         </div>
-        <div class="description-category"></div>
     </header>
 
     <body>
@@ -101,6 +114,18 @@
 
             {% endblock %}
         </main>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const burgerMenu = document.querySelector(".burger-menu");
+                const navbar = document.querySelector(".navbar");
+
+                burgerMenu.addEventListener("click", () => {
+                    navbar.classList.toggle("active");
+                });
+            });
+        </script>
+
     </body>
 
     <footer>
