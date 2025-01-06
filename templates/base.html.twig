@@ -62,6 +62,7 @@
         <div class="navbar pdgx-2">
             <nav>
                 <ul class="row navbar-list">
+                    <!-- Icone de la barre menu mais dans le menu burger -->
                     <li class="burger-lienMenu">
                         <div class="itemMenu itemMenu--user">
                             <a class="itemMenu" href="{{ path('client.index') }}">
@@ -83,7 +84,18 @@
                             {% endif %}
                         </a>
                     </li>
+
                     <div class="row">
+                        <li class="pdx-1 nav-item burger-orders">
+                            <h3>
+                                <a href="{{ path('app_facture') }}">Commandes en cours</a>
+                            </h3>
+                        </li>
+                        <li class="pdx-1 nav-item burger-orders">
+                            <h3>
+                                <a href="{{ path('app_facture_past') }}">Commandes passées</a>
+                            </h3>
+                        </li>
                         {% for category in categories %}
                             <li class="pdx-1 nav-item color-{{ loop.index }}">
                                 <h3><a href="/catalog?filterBy[]={{ category.id }}">{{ category.name }}</a></h3>
