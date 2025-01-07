@@ -31,7 +31,7 @@
                             <option value="price_desc" {% if sortBy == 'price_desc' %} selected {% endif %}>Prix décroissant &darr;</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="filter-buttons">
                         <a href="/catalog" class="deleteFilter" {% if app.request.query.all is empty %}hidden{% endif %}>Supprimer tous les filtres <i class="fa-solid fa-xmark"></i></a>
                         <button type="submit" class="button button--primary">Appliquer les filtres</button>
                     </div>
@@ -42,28 +42,30 @@
 
             <div id="catalogContainer" class="catalog">
                 {% for article in articles %}
-                    <div class="article-catalog pdgy-1">
-                        <div>
-                            <img src="/images/uploads/{{ article.images[0] }}" alt="">
+                    <div class="col-4 container-article-catalog">
+                        <div class="article-catalog">
+                            <div>
+                                <img src="/images/uploads/{{ article.images[0] }}" alt="">
 
-                            <h3 class="h3-article">
-                                <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
-                            </h3>
-                            <div class="description-article">{{ article.description | raw }}</div>
+                                <h3 class="h3-article">
+                                    <a href="{{ path('article.show', {id: article.id, slug: article.slug}) }}">{{ article.title }}</a>
+                                </h3>
+                                <div class="description-article">{{ article.description | raw }}</div>
+                            </div>
+                            <div class="row prix-panier-article">
+                                <p class="prix-article">{{ article.price }} €</p>
+                                <form action="{{ path('app_cart_add', {'id': article.id}) }}" method="POST" id="addCartForm-{{ article.id }}">
+                                    {% if article.variant is not empty %}
+                                        <input type="hidden" name="variant" value="{{ article.variant|first }}">
+                                    {% else %}
+                                        <input type="hidden" name="variant" value="" />
+                                    {% endif %}
+                                </form>
+                                <button form="addCartForm-{{ article.id }}" type="submit" class="button button--xsmall button--secondary">Ajouter au panier</button>
+                            </div>
                         </div>
-                        <div class="row prix-panier-article">
-                            <p class="prix-article">{{ article.price }} €</p>
-                            <form action="{{ path('app_cart_add', {'id': article.id}) }}" method="POST" id="addCartForm-{{ article.id }}">
-                                {% if article.variant is not empty %}
-                                    <input type="hidden" name="variant" value="{{ article.variant|first }}">
-                                {% else %}
-                                    <input type="hidden" name="variant" value="" />
-                                {% endif %}
-                            </form>
-                            <button form="addCartForm-{{ article.id }}" type="submit" class="button button--xsmall button--secondary">Ajouter au panier</button>
-                        </div>
-
                     </div>
+
                 {% endfor %}
                 {% set remainder = articles|length % 4 %}
                 {% if remainder > 0 %}
