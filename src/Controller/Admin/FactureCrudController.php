@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 
 class FactureCrudController extends AbstractCrudController
@@ -76,6 +77,8 @@ class FactureCrudController extends AbstractCrudController
             CollectionField::new('ligneFactures', 'Articles de la commande')
                 ->setTemplatePath('admin/fields/ligne_factures.html.twig')
                 ->onlyOnIndex(),
+
+            TextField::new('adresseLivraison', 'Adresse de livraison'),
 
             DateField::new('date_facture')->onlyOnIndex(),
 

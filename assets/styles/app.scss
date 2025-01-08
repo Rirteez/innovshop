@@ -648,7 +648,7 @@ footer {
         @media (max-width: 1200px) {
             flex-direction: column-reverse;
         }
-        @media (max-width: 567px) {
+        @media (max-width: 576px) {
             .col-2 {
                 width: 100%;
                 padding-inline: 1rem;
@@ -1042,7 +1042,7 @@ footer {
         gap: 1.5rem;
     }
 }
-@media (max-width: 567px) {
+@media (max-width: 576px) {
     .catalog .col-4 {
         width: 100%;
     }
@@ -1415,7 +1415,7 @@ footer {
         margin-top: 4rem;
     }
 }
-@media (max-width: 567px) {
+@media (max-width: 576px) {
     .sidebar {
         display: none;
     }
@@ -1687,7 +1687,7 @@ footer {
         }
     }
 }
-@media (max-width: 567px) {
+@media (max-width: 576px) {
     .account-container {
         width: 100%;
 

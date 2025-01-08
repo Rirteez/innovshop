@@ -43,6 +43,9 @@ class Facture
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
+    #[ORM\Column(length: 510)]
+    private ?string $adresse_livraison = null;
+
     public function __construct()
     {
         $this->ligneFactures = new ArrayCollection();
@@ -160,6 +163,18 @@ class Facture
         if ($event->hasChangedField('statut')) {
             $this->updated_at = new \DateTimeImmutable();
         }
+    }
+
+    public function getAdresseLivraison(): ?string
+    {
+        return $this->adresse_livraison;
+    }
+
+    public function setAdresseLivraison(string $adresse_livraison): static
+    {
+        $this->adresse_livraison = $adresse_livraison;
+
+        return $this;
     }
 }
 
