@@ -12,13 +12,42 @@ class AdresseLivraisonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('adresse', TextType::class)
-            ->add('complement_adr', TextType::class, [
-                'required' => false,
+            ->add('adresse', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'N° et nom de la rue',
+                    'class' => 'mgt-1 input-adresse',
+                ],
             ])
-            ->add('CP', TextType::class)
-            ->add('ville', TextType::class)
-            ->add('pays', TextType::class);
+            ->add('complement_adr', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Complément d\'adresse',
+                    'class' => 'mgt-1 input-adresse',
+                ],
+            ])
+            ->add('CP', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Code Postal',
+                    'class' => 'mgt-1 input-adresse',
+                ],
+            ])
+            ->add('ville', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'ville',
+                    'class' => 'mgt-1 input-adresse',
+                ],
+            ])
+            ->add('pays', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder' => 'Pays',
+                    'class' => 'mgt-1 input-adresse',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

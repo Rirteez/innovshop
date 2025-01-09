@@ -3,18 +3,20 @@
 {% block title %}InnovShop - {{ app.user.prenom }} {{ app.user.nom }}{% endblock %}
 
 {% block client_content %}
-    <div class="mgx-2 col-2">
-        <h2>Adresse de livraison</h2>
-        <div class="align-right">
-            {{ form_start(formAdresse) }}
-            {{ form_row(formAdresse.adresse) }}
-            {{ form_row(formAdresse.complement_adr) }}
-            {{ form_row(formAdresse.CP) }}
-            {{ form_row(formAdresse.ville) }}
-            {{ form_row(formAdresse.pays) }}
-            <button type="submit" class="mgt-1 button button--secondary">Valider la commande</button>
-            {{ form_end(formAdresse) }}
+    <div class="account-container">
+        <div class="mg-2 col-2">
+            <h2 class="delivery-title">Adresse de livraison</h2>
+            <p class="mgt-1">Vous pouvez laisser votre adresse de livraison par défaut ou bien la modifier si vous souhaitez être livré ailleurs.</p>
+            <div class="align-right">
+                {{ form_start(formAdresse) }}
+                {{ form_row(formAdresse.adresse) }}
+                {{ form_row(formAdresse.complement_adr) }}
+                {{ form_row(formAdresse.CP) }}
+                {{ form_row(formAdresse.ville) }}
+                {{ form_row(formAdresse.pays) }}
+                <button type="submit" class="mgt-1 button button--secondary">Valider la commande</button>
+                {{ form_end(formAdresse) }}
+            </div>
         </div>
     </div>
-
 {% endblock %}

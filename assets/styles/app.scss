@@ -1415,7 +1415,7 @@ footer {
         margin-top: 4rem;
     }
 }
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .sidebar {
         display: none;
     }
@@ -1708,8 +1708,44 @@ footer {
         }
     }
 }
+/* --------------------------------------------------- */
+/* --------------- Adresse de livraison -------------- */
+/* --------------------------------------------------- */
+@media (max-width: 1200px) {
+    .account-container {
+        margin-top: 3.5rem;
 
-
+        .delivery-title {
+            text-align: left;
+        }
+    }
+}
+@media (max-width: 992px) {
+    .account-container {
+        .col-2 {
+            margin: 2rem 0 0 0;
+            width: 100%;
+            box-sizing: border-box;
+            padding-inline: 1rem;
+        }
+        .delivery-title {
+            text-align: center;
+        }
+    }
+}
+@media (max-width: 768px) {
+    .account-container {
+        width: 100%;
+        .col-2 {
+            width: 100%;
+            box-sizing: border-box;
+            padding-inline: 0.5rem;
+        }
+        .delivery-title {
+            text-align: center;
+        }
+    }
+}
 
 
 
